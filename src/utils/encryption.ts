@@ -1,5 +1,5 @@
 import CryptoJS from 'crypto-js';
-import { Meeting, EncryptedData, UserProfile } from '../types/index';
+import { EncryptedData, UserProfile } from '../types/index';
 
 // Generate a random unique phrase for new users
 export const generateUniquePhrase = (): string => {

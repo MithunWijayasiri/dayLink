@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { FaLink, FaClock, FaCalendarAlt, FaAlignLeft } from 'react-icons/fa';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -168,7 +168,7 @@ const MeetingForm = ({ meeting, onClose }: MeetingFormProps) => {
               <FaCalendarAlt className="input-icon" />
               <DatePicker
                 selected={null}
-                onChange={(date: Date) => {
+                onChange={(date: Date | null) => {
                   if (date) {
                     // Check if date already exists in the array
                     const dateExists = specificDates.some(d => 

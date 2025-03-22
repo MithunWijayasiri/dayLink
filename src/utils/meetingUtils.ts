@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { format, isWeekend, isToday, parseISO } from 'date-fns';
+import { format, isWeekend } from 'date-fns';
 import { Meeting, MeetingType, RecurringType, UserProfile } from '../types/index';
 import { saveUserProfile } from './encryption';
 
