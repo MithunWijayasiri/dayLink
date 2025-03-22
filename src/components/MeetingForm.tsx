@@ -183,7 +183,7 @@ const MeetingForm = ({ meeting, onClose }: MeetingFormProps) => {
                 }}
                 placeholderText="Click to select dates"
                 className="date-picker"
-                dateFormat="MMMM d, yyyy"
+                dateFormat="EEEE, MMMM d, yyyy"
               />
             </div>
             
@@ -193,7 +193,7 @@ const MeetingForm = ({ meeting, onClose }: MeetingFormProps) => {
                 <ul>
                   {specificDates.map((date, index) => (
                     <li key={index}>
-                      {format(date, 'MMMM d, yyyy')}
+                      {format(date, 'EEEE, MMMM d, yyyy')}
                       <button 
                         type="button" 
                         className="remove-date"

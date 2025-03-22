@@ -111,7 +111,7 @@ export const getTodaysMeetings = (profile: UserProfile): Meeting[] => {
 
 // Format date for display
 export const formatDate = (date: Date = new Date()): string => {
-  return format(date, 'MMMM d, yyyy');
+  return format(date, 'EEEE, MMMM d, yyyy');
 };
 
 // Format time for display

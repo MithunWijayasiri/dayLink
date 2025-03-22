@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { FaPlus, FaCog, FaSignOutAlt, FaIdCard, FaBars, FaCopy } from 'react-icons/fa';
+import { FaPlus, FaCog, FaSignOutAlt, FaBars } from 'react-icons/fa';
 import { useAppContext } from '../context/AppContext';
 import MeetingList from './MeetingList';
 import MeetingForm from './MeetingForm';
@@ -10,9 +10,7 @@ const Dashboard = () => {
   const [showAddMeeting, setShowAddMeeting] = useState(false);
   const [showProfileManager, setShowProfileManager] = useState(false);
   const [editMeeting, setEditMeeting] = useState<string | null>(null);
-  const [showUniqueId, setShowUniqueId] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [copySuccess, setCopySuccess] = useState(false);
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const logoutConfirmRef = useRef<HTMLDivElement>(null);
@@ -39,10 +37,6 @@ const Dashboard = () => {
     setShowAddMeeting(true);
     setShowProfileManager(false);
   };
-
-  const toggleUniqueId = () => {
-    setShowUniqueId(!showUniqueId);
-  };
   
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -66,19 +60,6 @@ const Dashboard = () => {
     setShowAddMeeting(false);
     setShowProfileManager(false);
     setEditMeeting(null);
-  };
-  
-  const copyToClipboard = () => {
-    if (userProfile?.uniquePhrase) {
-      navigator.clipboard.writeText(userProfile.uniquePhrase)
-        .then(() => {
-          setCopySuccess(true);
-          setTimeout(() => setCopySuccess(false), 2000);
-        })
-        .catch(err => {
-          console.error('Failed to copy text: ', err);
-        });
-    }
   };
   
   // Close menu when clicking outside
@@ -110,34 +91,6 @@ const Dashboard = () => {
         <h1 className="site-title" onClick={navigateToDashboard}>Meeting Scheduler</h1>
         
         <div className="header-right">
-          {userProfile && (
-            <div className="user-id-container">
-              <button 
-                className="id-toggle-button" 
-                onClick={toggleUniqueId}
-                title={showUniqueId ? "Hide ID" : "Show ID"}
-              >
-                <FaIdCard /> {showUniqueId ? "Hide ID" : "Show ID"}
-              </button>
-              {showUniqueId && (
-                <div className="unique-id-display">
-                  <span className="unique-id-label">Your Unique ID:</span>
-                  <span className="unique-id-value">
-                    {userProfile.uniquePhrase}
-                    <button 
-                      className="copy-button" 
-                      onClick={copyToClipboard}
-                      title="Copy to clipboard"
-                    >
-                      <FaCopy />
-                      {copySuccess && <span className="copy-tooltip">Copied!</span>}
-                    </button>
-                  </span>
-                </div>
-              )}
-            </div>
-          )}
-          
           <div className="header-actions">
             <button 
               className="action-button add"

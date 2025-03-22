@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FaDownload, FaUpload, FaTrash } from 'react-icons/fa';
+import { FaDownload, FaUpload, FaTrash, FaCopy, FaArrowLeft } from 'react-icons/fa';
 import { useAppContext } from '../context/AppContext';
 import { exportUserData, importUserData } from '../utils/encryption';
 import { deleteUserProfile } from '../utils/meetingUtils';
@@ -14,6 +14,7 @@ const ProfileManager = ({ onClose }: ProfileManagerProps) => {
   const [importPhrase, setImportPhrase] = useState('');
   const [importError, setImportError] = useState('');
   const [deleteConfirm, setDeleteConfirm] = useState(false);
+  const [copySuccess, setCopySuccess] = useState(false);
 
   if (!userProfile) return null;
 
@@ -76,19 +77,73 @@ const ProfileManager = ({ onClose }: ProfileManagerProps) => {
     }
   };
 
+  const copyToClipboard = () => {
+    if (userProfile?.uniquePhrase) {
+      navigator.clipboard.writeText(userProfile.uniquePhrase)
+        .then(() => {
+          setCopySuccess(true);
+          setTimeout(() => setCopySuccess(false), 2000);
+        })
+        .catch(err => {
+          console.error('Failed to copy text: ', err);
+        });
+    }
+  };
+
   return (
     <div className="profile-manager-container">
-      <h2>Manage Profile</h2>
+      <div className="profile-header">
+        <button 
+          className="back-button"
+          onClick={onClose}
+          title="Back to Dashboard"
+        >
+          <FaArrowLeft />
+        </button>
+        <h2>Manage Profile</h2>
+      </div>
+
+      <div className="profile-section profile-info">
+        <h3>Profile Info</h3>
+        <div className="profile-details">
+          <div className="profile-detail-item">
+            <div className="profile-detail-row">
+              <span className="profile-detail-label">Username:</span>
+              <span className="profile-detail-value">
+                {userProfile.username || 'Not set'}
+              </span>
+            </div>
+          </div>
+          <div className="profile-detail-item">
+            <div className="profile-detail-row">
+              <span className="profile-detail-label">Your ID:</span>
+              <span className="unique-id-value">
+                {userProfile.uniquePhrase}
+                <button 
+                  className="copy-button" 
+                  onClick={copyToClipboard}
+                  title="Copy to clipboard"
+                >
+                  <FaCopy />
+                  {copySuccess && <span className="copy-tooltip">Copied!</span>}
+                </button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
       
       <div className="profile-section">
         <h3>Export Meeting Data</h3>
         <p>Download your encrypted meeting data as a file. You'll need your unique phrase to import it later.</p>
-        <button 
-          className="primary-button export-button"
-          onClick={handleExport}
-        >
-          <FaDownload /> Export Data
-        </button>
+        <div className="center-button-container">
+          <button 
+            className="primary-button export-button"
+            onClick={handleExport}
+          >
+            <FaDownload /> Export Data
+          </button>
+        </div>
       </div>
       
       <div className="profile-section">
@@ -123,12 +178,14 @@ const ProfileManager = ({ onClose }: ProfileManagerProps) => {
           
           {importError && <p className="error-message">{importError}</p>}
           
-          <button 
-            className="primary-button import-button"
-            onClick={handleImport}
-          >
-            <FaUpload /> Import Data
-          </button>
+          <div className="center-button-container">
+            <button 
+              className="primary-button import-button"
+              onClick={handleImport}
+            >
+              <FaUpload /> Import Data
+            </button>
+          </div>
         </div>
       </div>
       
@@ -155,22 +212,15 @@ const ProfileManager = ({ onClose }: ProfileManagerProps) => {
             </div>
           </div>
         ) : (
-          <button 
-            className="danger-button"
-            onClick={() => setDeleteConfirm(true)}
-          >
-            <FaTrash /> Delete Profile
-          </button>
+          <div className="center-button-container">
+            <button 
+              className="danger-button"
+              onClick={() => setDeleteConfirm(true)}
+            >
+              <FaTrash /> Delete Profile
+            </button>
+          </div>
         )}
-      </div>
-      
-      <div className="button-group">
-        <button 
-          className="secondary-button"
-          onClick={onClose}
-        >
-          Back to Dashboard
-        </button>
       </div>
     </div>
   );
