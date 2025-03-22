@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Meeting Scheduler</title>
+    <!-- Add additional debugging info -->
+    <script>
+      window.addEventListener('error', function(event) {
+        console.error('Global error caught:', event.error);
+        const errorDiv = document.createElement('div');
+        errorDiv.style.padding = '20px';
+        errorDiv.style.color = 'red';
+        errorDiv.style.backgroundColor = '#ffeeee';
+        errorDiv.style.border = '2px solid red';
+        errorDiv.style.margin = '20px';
+        errorDiv.innerHTML = `<h2>Error loading application:</h2><p>${event.message}</p>`;
+        document.body.prepend(errorDiv);
+      });
+    </script>
+  </head>
+  <body>
+    <!-- Add a fallback message that will be replaced when React loads -->
+    <div id="root">
+      <div style="padding: 20px; text-align: center;">
+        <h2>Loading Meeting Scheduler...</h2>
+        <p>If this message doesn't disappear, there might be an issue with the application.</p>
+      </div>
+    </div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
