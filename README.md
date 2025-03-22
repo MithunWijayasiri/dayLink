@@ -2,7 +2,8 @@
 
 A lightweight, client-side meeting scheduler that lets you manage daily meetings with ease. Display today’s schedule, add meetings with custom links, and edit or delete them—all stored locally in your browser. Secure your data with a unique phrase, export/import encrypted files, and enjoy a simple, privacy-first experience with no server required.
 
-<span style="color: red; font-weight: bold;">⚠️ Warning: This project is in its initial development stage. Expect bugs and incomplete features as we work toward a stable release. Use at your own risk!</span>
+> [!WARNING]
+> This project is in its initial development stage. Expect bugs and incomplete features as we work toward a stable release. Use at your own risk!
 
 ## React + TypeScript + Vite
 
