@@ -22,6 +22,9 @@ const MeetingForm = ({ meeting, onClose }: MeetingFormProps) => {
   const [specificDates, setSpecificDates] = useState<Date[]>(
     meeting?.specificDates ? meeting.specificDates.map(date => new Date(date)) : []
   );
+  const [specificDays, setSpecificDays] = useState<string[]>(
+    meeting?.specificDays || []
+  );
   const [error, setError] = useState('');
 
   // Detect meeting type based on URL
@@ -79,6 +82,11 @@ const MeetingForm = ({ meeting, onClose }: MeetingFormProps) => {
       return false;
     }
 
+    if (recurringType === 'specificDays' && specificDays.length === 0) {
+      setError('Please select at least one day of the week');
+      return false;
+    }
+
     return true;
   };
 
@@ -98,7 +106,8 @@ const MeetingForm = ({ meeting, onClose }: MeetingFormProps) => {
         description,
         recurringType,
         time,
-        specificDates: recurringType === 'specific' ? formattedDates : undefined
+        specificDates: recurringType === 'specific' ? formattedDates : undefined,
+        specificDays: recurringType === 'specificDays' ? specificDays : undefined
       });
       setUserProfileState(updatedProfile);
     } else {
@@ -110,7 +119,8 @@ const MeetingForm = ({ meeting, onClose }: MeetingFormProps) => {
         recurringType,
         time,
         recurringType === 'specific' ? formattedDates : undefined,
-        description
+        description,
+        recurringType === 'specificDays' ? specificDays : undefined
       );
       setUserProfileState(updatedProfile);
     }
@@ -164,7 +174,7 @@ const MeetingForm = ({ meeting, onClose }: MeetingFormProps) => {
         <div className="form-group">
           <label>Meeting Schedule</label>
           <div className="recurring-type-options">
-            {(['weekdays', 'weekends', 'specific'] as RecurringType[]).map(type => (
+            {(['weekdays', 'weekends', 'specificDays', 'specific'] as RecurringType[]).map(type => (
               <label key={type} className="radio-label">
                 <input
                   type="radio"
@@ -178,6 +188,7 @@ const MeetingForm = ({ meeting, onClose }: MeetingFormProps) => {
                 />
                 <span>{type === 'weekdays' ? 'Every Weekday' : 
                        type === 'weekends' ? 'Every Weekend' : 
+                       type === 'specificDays' ? 'Specific Days' :
                        'Specific Dates'}</span>
               </label>
             ))}
@@ -207,6 +218,7 @@ const MeetingForm = ({ meeting, onClose }: MeetingFormProps) => {
                 placeholderText="Click to select dates"
                 className="date-picker"
                 dateFormat="EEEE, MMMM d, yyyy"
+                minDate={new Date()} // Prevent selection of past dates
               />
             </div>
             
@@ -229,6 +241,52 @@ const MeetingForm = ({ meeting, onClose }: MeetingFormProps) => {
                 </ul>
               </div>
             )}
+          </div>
+        )}
+
+        {recurringType === 'specificDays' && (
+          <div className="form-group">
+            <label>Select Days of the Week</label>
+            <div className="days-container">
+              <div className="weekday-selector">
+                {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'].map(day => (
+                  <label key={day} className="checkbox-label">
+                    <input
+                      type="checkbox"
+                      checked={specificDays.includes(day)}
+                      onChange={() => {
+                        if (specificDays.includes(day)) {
+                          setSpecificDays(specificDays.filter(d => d !== day));
+                        } else {
+                          setSpecificDays([...specificDays, day]);
+                        }
+                        setError('');
+                      }}
+                    />
+                    <span>{day}</span>
+                  </label>
+                ))}
+              </div>
+              <div className="weekend-selector">
+                {['Saturday', 'Sunday'].map(day => (
+                  <label key={day} className="checkbox-label">
+                    <input
+                      type="checkbox"
+                      checked={specificDays.includes(day)}
+                      onChange={() => {
+                        if (specificDays.includes(day)) {
+                          setSpecificDays(specificDays.filter(d => d !== day));
+                        } else {
+                          setSpecificDays([...specificDays, day]);
+                        }
+                        setError('');
+                      }}
+                    />
+                    <span>{day}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
           </div>
         )}
         

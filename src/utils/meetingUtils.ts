@@ -11,7 +11,8 @@ export const createMeeting = (
   recurringType: RecurringType,
   time: string,
   specificDates?: string[],
-  description?: string
+  description?: string,
+  specificDays?: string[]
 ): UserProfile => {
   const now = new Date().toISOString();
   
@@ -23,6 +24,7 @@ export const createMeeting = (
     time,
     specificDates,
     description,
+    specificDays,
     createdAt: now,
     updatedAt: now
   };
@@ -85,11 +87,17 @@ export const getTodaysMeetings = (profile: UserProfile): Meeting[] => {
   const today = new Date();
   const isWeekendToday = isWeekend(today);
   const todayStr = format(today, 'yyyy-MM-dd');
+  const dayOfWeek = format(today, 'EEEE'); // Returns day name like "Monday"
   
   return profile.meetings.filter(meeting => {
     // Check for specific dates
     if (meeting.recurringType === 'specific' && meeting.specificDates) {
       return meeting.specificDates.includes(todayStr);
+    }
+    
+    // Check for specific days of the week
+    if (meeting.recurringType === 'specificDays' && meeting.specificDays) {
+      return meeting.specificDays.includes(dayOfWeek);
     }
     
     // Check for weekdays (Monday-Friday)
