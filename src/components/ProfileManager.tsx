@@ -63,6 +63,12 @@ const ProfileManager = ({ onClose }: ProfileManagerProps) => {
       }
       
       setUserProfileState(importedProfile);
+      
+      // Store the imported profile's phrase in localStorage
+      if (importedProfile.uniquePhrase) {
+        localStorage.setItem('uniquePhrase', importedProfile.uniquePhrase);
+      }
+      
       onClose();
     } catch (error) {
       console.error('Import error:', error);
@@ -72,6 +78,10 @@ const ProfileManager = ({ onClose }: ProfileManagerProps) => {
 
   const handleDeleteProfile = () => {
     if (userProfile) {
+      // Remove from localStorage first
+      localStorage.removeItem('uniquePhrase');
+      
+      // Then delete the profile from any other storage
       deleteUserProfile(userProfile);
       logout();
     }

@@ -3,10 +3,7 @@ import { Meeting, UserProfile } from '../types/index';
 import {
   generateUniquePhrase,
   getUserProfile,
-  saveUserProfile,
-  savePhraseToSession,
-  getPhraseFromSession,
-  clearPhraseFromSession
+  saveUserProfile
 } from '../utils/encryption';
 import { createNewUserProfile, getTodaysMeetings } from '../utils/meetingUtils';
 
@@ -18,7 +15,7 @@ interface AppContextType {
   isNewUser: boolean;
   login: (phrase: string) => boolean;
   logout: () => void;
-  generateNewProfile: (username?: string) => void;
+  generateNewProfile: (username?: string, customPhrase?: string) => void;
   refreshMeetings: () => void;
   setUserProfileState: (profile: UserProfile) => void;
 }
@@ -44,11 +41,11 @@ export const AppProvider = ({ children }: AppProviderProps) => {
   const [uniquePhrase, setUniquePhrase] = useState<string | null>(null);
   const [isNewUser, setIsNewUser] = useState(false);
 
-  // Check for existing session on mount
+  // Check for existing phrase in localStorage on mount
   useEffect(() => {
-    const sessionPhrase = getPhraseFromSession();
-    if (sessionPhrase) {
-      login(sessionPhrase);
+    const storedPhrase = localStorage.getItem('uniquePhrase');
+    if (storedPhrase) {
+      login(storedPhrase);
     }
   }, []);
 
@@ -62,7 +59,6 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     if (profile) {
       setUserProfile(profile);
       setUniquePhrase(phrase);
-      savePhraseToSession(phrase);
       setIsAuthenticated(true);
       setIsNewUser(false);
       return true;
@@ -74,16 +70,15 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     setUserProfile(null);
     setUniquePhrase(null);
     setIsAuthenticated(false);
-    clearPhraseFromSession();
+    localStorage.removeItem('uniquePhrase');
   };
 
-  const generateNewProfile = (username?: string) => {
-    const newPhrase = generateUniquePhrase();
+  const generateNewProfile = (username?: string, customPhrase?: string) => {
+    const newPhrase = customPhrase || generateUniquePhrase();
     const newProfile = createNewUserProfile(newPhrase, username);
     saveUserProfile(newProfile);
     setUserProfile(newProfile);
     setUniquePhrase(newPhrase);
-    savePhraseToSession(newPhrase);
     setIsAuthenticated(true);
     setIsNewUser(true);
   };

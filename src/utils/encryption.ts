@@ -87,16 +87,22 @@ export const getUserProfile = (phrase: string): UserProfile | null => {
 
 // Save phrase to session storage for current session
 export const savePhraseToSession = (phrase: string): void => {
+  // This function is deprecated - using localStorage directly instead
+  console.warn('savePhraseToSession is deprecated. Use localStorage directly.');
   sessionStorage.setItem('meeting_scheduler_phrase', phrase);
 };
 
 // Get phrase from session storage
 export const getPhraseFromSession = (): string | null => {
+  // This function is deprecated - using localStorage directly instead
+  console.warn('getPhraseFromSession is deprecated. Use localStorage directly.');
   return sessionStorage.getItem('meeting_scheduler_phrase');
 };
 
 // Clear phrase from session storage (logout)
 export const clearPhraseFromSession = (): void => {
+  // This function is deprecated - using localStorage directly instead
+  console.warn('clearPhraseFromSession is deprecated. Use localStorage directly.');
   sessionStorage.removeItem('meeting_scheduler_phrase');
 };
 

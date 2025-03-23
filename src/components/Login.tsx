@@ -1,40 +1,67 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAppContext } from '../context/AppContext';
-import { FaKey, FaUserPlus, FaUser } from 'react-icons/fa';
+import { FaKey, FaUserPlus, FaUser, FaSync } from 'react-icons/fa';
+import { generateUniquePhrase } from '../utils/encryption';
 
 const Login = () => {
   const { login, generateNewProfile, isNewUser, uniquePhrase } = useAppContext();
   const [inputPhrase, setInputPhrase] = useState('');
   const [username, setUsername] = useState('');
-  const [error, setError] = useState('');
-  const [showNewUserForm, setShowNewUserForm] = useState(false);
+  const [loginError, setLoginError] = useState('');
+  const [signupError, setSignupError] = useState('');
   const [showNewUserInfo, setShowNewUserInfo] = useState(false);
+  const [generatedPhrase, setGeneratedPhrase] = useState('');
+
+  // Check for stored unique phrase on component mount
+  useEffect(() => {
+    const storedPhrase = localStorage.getItem('uniquePhrase');
+    if (storedPhrase) {
+      login(storedPhrase);
+    }
+  }, []); // Empty dependency array to run only once on mount
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     if (!inputPhrase.trim()) {
-      setError('Please enter your unique phrase');
+      setLoginError('Please enter your unique phrase');
       return;
     }
 
     const success = login(inputPhrase.trim());
-    if (!success) {
-      setError('Invalid phrase. Please try again or generate a new profile.');
+    if (success) {
+      // Store the unique phrase in localStorage
+      localStorage.setItem('uniquePhrase', inputPhrase.trim());
+    } else {
+      setLoginError('Invalid phrase. Please try again or create a new profile.');
     }
   };
 
-  const handleGenerateNew = () => {
-    setShowNewUserForm(true);
+  const handleGeneratePhrase = () => {
+    if (!username.trim()) {
+      setSignupError('Please enter a username first');
+      return;
+    }
+    
+    const newPhrase = generateUniquePhrase();
+    setGeneratedPhrase(newPhrase);
+    setSignupError('');
   };
 
   const handleCreateProfile = (e: React.FormEvent) => {
     e.preventDefault();
+    
     if (!username.trim()) {
-      setError('Please enter a username');
+      setSignupError('Please enter a username');
       return;
     }
     
-    generateNewProfile(username.trim());
+    if (!generatedPhrase) {
+      setSignupError('Please generate a unique phrase');
+      return;
+    }
+    
+    // Use the already generated phrase
+    generateNewProfile(username.trim(), generatedPhrase);
     setShowNewUserInfo(true);
   };
 
@@ -51,7 +78,11 @@ const Login = () => {
           </p>
           <button 
             className="primary-button"
-            onClick={() => login(uniquePhrase)}
+            onClick={() => {
+              // Store phrase in localStorage and login
+              localStorage.setItem('uniquePhrase', uniquePhrase);
+              login(uniquePhrase);
+            }}
           >
             Sign Up
           </button>
@@ -60,83 +91,95 @@ const Login = () => {
     );
   }
 
-  // Show the new profile creation form
-  if (showNewUserForm) {
-    return (
-      <div className="login-container">
-        <h2>Create New Profile</h2>
-        <p>Enter a username and we'll generate a unique phrase for you.</p>
-        
-        <form onSubmit={handleCreateProfile} className="login-form">
-          <div className="input-group">
-            <FaUser className="input-icon" />
-            <input
-              type="text"
-              value={username}
-              onChange={(e) => {
-                setUsername(e.target.value);
-                setError('');
-              }}
-              placeholder="Enter username"
-              className="text-input"
-            />
-          </div>
-          
-          {error && <p className="error-message">{error}</p>}
-          
-          <div className="button-group">
-            <button type="submit" className="primary-button">
-              Generate Unique Phrase
-            </button>
-            <button 
-              type="button" 
-              className="secondary-button"
-              onClick={() => setShowNewUserForm(false)}
-            >
-              Cancel
-            </button>
-          </div>
-        </form>
-      </div>
-    );
-  }
-
-  // Default login form
+  // Combined login and signup form
   return (
     <div className="login-container">
       <h2>Meeting Scheduler</h2>
-      <p>Enter your unique phrase to access your meetings or generate a new profile.</p>
       
-      <form onSubmit={handleLogin} className="login-form">
-        <div className="input-group">
-          <FaKey className="input-icon" />
-          <input
-            type="text"
-            value={inputPhrase}
-            onChange={(e) => {
-              setInputPhrase(e.target.value);
-              setError('');
-            }}
-            placeholder="Enter your unique phrase"
-            className="text-input"
-          />
+      <div className="login-signup-container">
+        <div className="login-section">
+          <h3>Login</h3>
+          <p>Enter your unique phrase to access your meetings</p>
+          
+          <form onSubmit={handleLogin} className="login-form">
+            <div className="input-group">
+              <FaKey className="input-icon" />
+              <input
+                type="text"
+                value={inputPhrase}
+                onChange={(e) => {
+                  setInputPhrase(e.target.value);
+                  setLoginError('');
+                }}
+                placeholder="123X5-67Y9"
+                className="text-input"
+              />
+            </div>
+            
+            {loginError && <p className="error-message">{loginError}</p>}
+            
+            <button type="submit" className="primary-button">
+              <FaKey /> Login
+            </button>
+          </form>
         </div>
         
-        {error && <p className="error-message">{error}</p>}
+        <div className="divider"></div>
         
-        <div className="button-group">
-          <button type="submit" className="primary-button">
-            <FaKey /> Login
-          </button>
-          <button 
-            type="button" 
-            className="secondary-button"
-            onClick={handleGenerateNew}
-          >
-            <FaUserPlus /> New Profile
-          </button>
+        <div className="signup-section">
+          <h3>Create New Profile</h3>
+          <p>Enter a username and generate a unique phrase</p>
+          
+          <form onSubmit={handleCreateProfile} className="signup-form">
+            <div className="input-group">
+              <FaUser className="input-icon" />
+              <input
+                type="text"
+                value={username}
+                onChange={(e) => {
+                  setUsername(e.target.value);
+                  setSignupError('');
+                  // Clear generated phrase when username changes
+                  if (generatedPhrase) setGeneratedPhrase('');
+                }}
+                placeholder="Username"
+                className="text-input"
+              />
+            </div>
+            
+            <div className="input-group phrase-input-group">
+              <FaKey className="input-icon" />
+              <input
+                type="text"
+                value={generatedPhrase}
+                readOnly
+                disabled={!generatedPhrase}
+                placeholder="Unique Phrase"
+                className="text-input phrase-input"
+                aria-label="Generated unique phrase"
+              />
+              <button 
+                type="button"
+                className="generate-icon-button"
+                onClick={handleGeneratePhrase}
+                title="Generate Unique Phrase"
+                aria-label="Generate unique phrase"
+              >
+                <FaSync className="generate-icon" />
+              </button>
+            </div>
+            
+            {signupError && <p className="error-message">{signupError}</p>}
+            
+            <button 
+              type="submit" 
+              className={`primary-button create-profile-button ${generatedPhrase ? 'ready' : ''}`}
+            >
+              <FaUserPlus /> Create Profile
+            </button>
+          </form>
         </div>
-      </form>
+      </div>
     </div>
   );
 };
