@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { FaPlus, FaCog, FaSignOutAlt, FaBars } from 'react-icons/fa';
+import { FaPlus, FaCog, FaSignOutAlt, FaBars, FaCalendarAlt, FaCheckCircle, FaClock } from 'react-icons/fa';
 import { useAppContext } from '../context/AppContext';
 import MeetingList from './MeetingList';
 import MeetingForm from './MeetingForm';
@@ -84,12 +84,30 @@ const Dashboard = () => {
   const meetingToEdit = editMeeting && userProfile
     ? userProfile.meetings.find(m => m.id === editMeeting)
     : undefined;
+    
+  // Calculate some basic stats for the dashboard
+  const totalMeetings = userProfile?.meetings?.length || 0;
+  const upcomingMeetings = userProfile?.meetings?.filter(m => {
+    // For recurring meetings, check if today matches the pattern
+    // For specific dates, check if any dates are in the future
+    if (m.recurringType === 'specific' && m.specificDates && m.specificDates.length > 0) {
+      return m.specificDates.some(dateStr => {
+        const specificDate = new Date(dateStr);
+        return specificDate >= new Date();
+      });
+    }
+    // If we can't determine, count it as upcoming
+    return true;
+  }).length || 0;
 
   return (
     <div className="dashboard-container">
       <header className="dashboard-header">
         <div className="app-branding dashboard-branding" onClick={navigateToDashboard}>
-          <h1>dayLink</h1>
+          <div className="logo-container">
+            <div className="logo-icon">d</div>
+            <h1>dayLink</h1>
+          </div>
           <p className="tagline">Meeting Scheduler</p>
         </div>
         
@@ -128,6 +146,45 @@ const Dashboard = () => {
           </div>
         </div>
       </header>
+
+      {!showAddMeeting && !showProfileManager && (
+        <div className="dashboard-welcome">
+          <h2>Welcome, {userProfile?.username || 'User'}</h2>
+          <p className="welcome-subtitle">Here's your meeting overview</p>
+          
+          <div className="stats-container">
+            <div className="stat-card">
+              <div className="stat-icon">
+                <FaCalendarAlt />
+              </div>
+              <div className="stat-details">
+                <div className="stat-value">{totalMeetings}</div>
+                <div className="stat-label">Total Meetings</div>
+              </div>
+            </div>
+            
+            <div className="stat-card">
+              <div className="stat-icon">
+                <FaCheckCircle />
+              </div>
+              <div className="stat-details">
+                <div className="stat-value">{upcomingMeetings}</div>
+                <div className="stat-label">Upcoming</div>
+              </div>
+            </div>
+            
+            <div className="stat-card">
+              <div className="stat-icon">
+                <FaClock />
+              </div>
+              <div className="stat-details">
+                <div className="stat-value">{new Date().toLocaleDateString()}</div>
+                <div className="stat-label">Today</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <main className="dashboard-content">
         {showAddMeeting ? (

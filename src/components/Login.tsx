@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAppContext } from '../context/AppContext';
-import { FaKey, FaUserPlus, FaUser, FaSync, FaSignInAlt, FaLock } from 'react-icons/fa';
+import { FaKey, FaUserPlus, FaUser, FaSync, FaSignInAlt, FaLock, FaShieldAlt } from 'react-icons/fa';
 import { generateUniquePhrase } from '../utils/encryption';
 import toast from 'react-hot-toast';
 import Footer from './Footer';
@@ -74,16 +74,21 @@ const Login = () => {
     return (
       <div className="login-container">
         <div className="app-branding">
-          <h1>dayLink</h1>
+          <div className="logo-container">
+            <div className="logo-icon">d</div>
+            <h1>dayLink</h1>
+          </div>
           <p className="tagline">Meeting Scheduler</p>
         </div>
+        
         <div className="new-user-info">
           <h2>Your Unique Phrase</h2>
           <div className="unique-phrase-display">{uniquePhrase}</div>
-          <p className="warning">
-            <strong>IMPORTANT:</strong> Save this phrase somewhere safe. You will need it to access your meetings in the future.
-            There is no way to recover this phrase if you lose it.
-          </p>
+          <div className="warning">
+            <FaShieldAlt style={{ marginRight: '8px' }} />
+            <p><strong>IMPORTANT:</strong> Save this phrase somewhere safe. You will need it to access your meetings in the future.
+            There is no way to recover this phrase if you lose it.</p>
+          </div>
           <button 
             className="primary-button"
             onClick={() => {
@@ -92,7 +97,7 @@ const Login = () => {
               login(uniquePhrase);
             }}
           >
-            Sign Up
+            <FaSignInAlt /> Continue to Dashboard
           </button>
         </div>
         
@@ -114,7 +119,10 @@ const Login = () => {
   return (
     <div className="login-container">
       <div className="app-branding">
-        <h1>dayLink</h1>
+        <div className="logo-container">
+          <div className="logo-icon">d</div>
+          <h1>dayLink</h1>
+        </div>
         <p className="tagline">Meeting Scheduler</p>
       </div>
       
@@ -132,7 +140,7 @@ const Login = () => {
                 onChange={(e) => {
                   setInputPhrase(e.target.value);
                 }}
-                placeholder="123X5-67Y9"
+                placeholder="Enter your unique phrase"
                 className="text-input"
               />
             </div>
@@ -188,7 +196,7 @@ const Login = () => {
             
             <button 
               type="submit" 
-              className="primary-button"
+              className="primary-button create-profile-button"
             >
               <FaUserPlus /> Create Profile
             </button>

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { FaLink, FaClock, FaCalendarAlt, FaAlignLeft } from 'react-icons/fa';
+import { FaLink, FaClock, FaCalendarAlt, FaAlignLeft, FaCalendarCheck, FaInfoCircle, FaTimes } from 'react-icons/fa';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Meeting, MeetingType, RecurringType } from '../types/index';
@@ -251,7 +251,7 @@ const MeetingForm = ({ meeting, onClose }: MeetingFormProps) => {
             
             {specificDates.length > 0 && (
               <div className="selected-dates">
-                <h4>Selected Dates:</h4>
+                <h4><FaCalendarCheck /> Selected Dates:</h4>
                 <ul>
                   {specificDates.map((date, index) => (
                     <li key={index}>
@@ -261,7 +261,7 @@ const MeetingForm = ({ meeting, onClose }: MeetingFormProps) => {
                         className="remove-date"
                         onClick={() => setSpecificDates(specificDates.filter((_, i) => i !== index))}
                       >
-                        ×
+                        <FaTimes />
                       </button>
                     </li>
                   ))}
@@ -319,8 +319,8 @@ const MeetingForm = ({ meeting, onClose }: MeetingFormProps) => {
         
         <div className="form-group">
           <label htmlFor="meetingTime">Meeting Time</label>
-          <div className="input-group">
-            <FaClock className="input-icon" />
+          <div className="input-group time-input-container">
+            <FaClock className="input-icon" style={{ color: 'var(--primary-color)' }} />
             <input
               id="meetingTime"
               type="time"
