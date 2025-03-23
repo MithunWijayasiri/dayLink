@@ -2,13 +2,12 @@ import { useState, useEffect } from 'react';
 import { useAppContext } from '../context/AppContext';
 import { FaKey, FaUserPlus, FaUser, FaSync, FaSignInAlt } from 'react-icons/fa';
 import { generateUniquePhrase } from '../utils/encryption';
+import toast from 'react-hot-toast';
 
 const Login = () => {
   const { login, generateNewProfile, isNewUser, uniquePhrase } = useAppContext();
   const [inputPhrase, setInputPhrase] = useState('');
   const [username, setUsername] = useState('');
-  const [loginError, setLoginError] = useState('');
-  const [signupError, setSignupError] = useState('');
   const [showNewUserInfo, setShowNewUserInfo] = useState(false);
   const [generatedPhrase, setGeneratedPhrase] = useState('');
 
@@ -20,43 +19,47 @@ const Login = () => {
     }
   }, []); // Empty dependency array to run only once on mount
 
+  // Helper function to show error toast (dismissing any existing toast first)
+  const showErrorToast = (message: string) => {
+    toast.dismiss(); // Dismiss any existing toast
+    toast.error(message);
+  };
+
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     if (!inputPhrase.trim()) {
-      setLoginError('Please enter your unique phrase');
+      showErrorToast('Please enter your unique phrase');
       return;
     }
 
     const success = login(inputPhrase.trim());
     if (success) {
-      // Store the unique phrase in localStorage
       localStorage.setItem('uniquePhrase', inputPhrase.trim());
     } else {
-      setLoginError('Invalid phrase. Please try again or create a new profile.');
+      showErrorToast('Invalid phrase. Please try again or create a new profile.');
     }
   };
 
   const handleGeneratePhrase = () => {
     if (!username.trim()) {
-      setSignupError('Please enter a username first');
+      showErrorToast('Please enter a username first');
       return;
     }
     
     const newPhrase = generateUniquePhrase();
     setGeneratedPhrase(newPhrase);
-    setSignupError('');
   };
 
   const handleCreateProfile = (e: React.FormEvent) => {
     e.preventDefault();
     
     if (!username.trim()) {
-      setSignupError('Please enter a username');
+      showErrorToast('Please enter a username');
       return;
     }
     
     if (!generatedPhrase) {
-      setSignupError('Please generate a unique phrase');
+      showErrorToast('Please generate a unique phrase');
       return;
     }
     
@@ -109,14 +112,11 @@ const Login = () => {
                 value={inputPhrase}
                 onChange={(e) => {
                   setInputPhrase(e.target.value);
-                  setLoginError('');
                 }}
                 placeholder="123X5-67Y9"
                 className="text-input"
               />
             </div>
-            
-            {loginError && <p className="error-message">{loginError}</p>}
             
             <button type="submit" className="primary-button">
               <FaSignInAlt /> Login
@@ -138,8 +138,6 @@ const Login = () => {
                 value={username}
                 onChange={(e) => {
                   setUsername(e.target.value);
-                  setSignupError('');
-                  // Clear generated phrase when username changes
                   if (generatedPhrase) setGeneratedPhrase('');
                 }}
                 placeholder="Username"
@@ -169,8 +167,6 @@ const Login = () => {
               </button>
             </div>
             
-            {signupError && <p className="error-message">{signupError}</p>}
-            
             <button 
               type="submit" 
               className={`primary-button create-profile-button ${generatedPhrase ? 'ready' : ''}`}
@@ -180,6 +176,7 @@ const Login = () => {
           </form>
         </div>
       </div>
+      
     </div>
   );
 };

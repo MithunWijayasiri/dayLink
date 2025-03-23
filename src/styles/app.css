@@ -955,9 +955,9 @@ body {
 }
 
 .generate-icon-button:hover .generate-icon {
-  /* animation: spin 1s linear;  */
-  transform: scale(1.1); /* Add slight scaling on hover */
-  transition: transform 0.2s ease;
+  animation: spin 2s linear; 
+  /* transform: scale(1.1); /* Add slight scaling on hover */
+  /* transition: transform 0.2s ease; */
 }
 
 @keyframes spin {
