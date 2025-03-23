@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useAppContext } from '../context/AppContext';
-import { FaKey, FaUserPlus, FaUser, FaSync, FaSignInAlt, FaLock, FaShieldAlt } from 'react-icons/fa';
+import { FaKey, FaUserPlus, FaUser, FaSignInAlt, FaLock, FaShieldAlt, FaCopy, FaCheck } from 'react-icons/fa';
 import { generateUniquePhrase } from '../utils/encryption';
 import toast from 'react-hot-toast';
 import Footer from './Footer';
@@ -11,7 +11,8 @@ const Login = () => {
   const [username, setUsername] = useState('');
   const [showNewUserInfo, setShowNewUserInfo] = useState(false);
   const [generatedPhrase, setGeneratedPhrase] = useState('');
-
+  const [isCopied, setIsCopied] = useState(false);
+  
   // Check for stored unique phrase on component mount
   useEffect(() => {
     const storedPhrase = localStorage.getItem('uniquePhrase');
@@ -19,6 +20,16 @@ const Login = () => {
       login(storedPhrase);
     }
   }, []); // Empty dependency array to run only once on mount
+
+  // Generate phrase when username changes
+  useEffect(() => {
+    if (username.trim()) {
+      const newPhrase = generateUniquePhrase();
+      setGeneratedPhrase(newPhrase);
+    } else {
+      setGeneratedPhrase('');
+    }
+  }, [username]);
 
   // Helper function to show error toast (dismissing any existing toast first)
   const showErrorToast = (message: string) => {
@@ -37,18 +48,22 @@ const Login = () => {
     if (success) {
       localStorage.setItem('uniquePhrase', inputPhrase.trim());
     } else {
-      showErrorToast('Invalid phrase. Please try again or create a new profile.');
+      showErrorToast('Invalid phrase. Please try again.');
     }
   };
 
-  const handleGeneratePhrase = () => {
-    if (!username.trim()) {
-      showErrorToast('Please enter a username first');
-      return;
+  const handleCopyPhrase = () => {
+    if (generatedPhrase) {
+      navigator.clipboard.writeText(generatedPhrase)
+        .then(() => {
+          setIsCopied(true);
+          toast.success('Phrase copied to clipboard!');
+          setTimeout(() => setIsCopied(false), 2000);
+        })
+        .catch(() => {
+          toast.error('Failed to copy phrase');
+        });
     }
-    
-    const newPhrase = generateUniquePhrase();
-    setGeneratedPhrase(newPhrase);
   };
 
   const handleCreateProfile = (e: React.FormEvent) => {
@@ -72,7 +87,7 @@ const Login = () => {
   // Display the new profile information after generation
   if (isNewUser && uniquePhrase && showNewUserInfo) {
     return (
-      <div className="login-container">
+      <div className="login-container lime-theme">
         <div className="app-branding">
           <div className="logo-container">
             <div className="logo-icon">d</div>
@@ -90,7 +105,7 @@ const Login = () => {
             There is no way to recover this phrase if you lose it.</p>
           </div>
           <button 
-            className="primary-button"
+            className="primary-button lime-button"
             onClick={() => {
               // Store phrase in localStorage and login
               localStorage.setItem('uniquePhrase', uniquePhrase);
@@ -117,7 +132,7 @@ const Login = () => {
 
   // Combined login and signup form
   return (
-    <div className="login-container">
+    <div className="login-container lime-theme">
       <div className="app-branding">
         <div className="logo-container">
           <div className="logo-icon">d</div>
@@ -141,11 +156,11 @@ const Login = () => {
                   setInputPhrase(e.target.value);
                 }}
                 placeholder="Enter your unique phrase"
-                className="text-input"
+                className="text-input lime-input"
               />
             </div>
             
-            <button type="submit" className="primary-button">
+            <button type="submit" className="primary-button lime-button">
               <FaSignInAlt /> Login
             </button>
           </form>
@@ -155,7 +170,7 @@ const Login = () => {
         
         <div className="signup-section">
           <h3>Create New Profile</h3>
-          <p>Enter a username and generate a unique phrase</p>
+          <p>Enter a username and we'll generate a unique phrase</p>
           
           <form onSubmit={handleCreateProfile} className="signup-form">
             <div className="input-group">
@@ -165,10 +180,9 @@ const Login = () => {
                 value={username}
                 onChange={(e) => {
                   setUsername(e.target.value);
-                  if (generatedPhrase) setGeneratedPhrase('');
                 }}
                 placeholder="Username"
-                className="text-input"
+                className="text-input lime-input"
               />
             </div>
             
@@ -179,24 +193,28 @@ const Login = () => {
                 value={generatedPhrase}
                 readOnly
                 disabled={!generatedPhrase}
-                placeholder="Unique Phrase"
-                className="text-input phrase-input"
+                placeholder="Your unique phrase will appear here"
+                className="text-input phrase-input lime-input"
                 aria-label="Generated unique phrase"
+                style={{ fontWeight: 'normal' }}
               />
-              <button 
-                type="button"
-                className="generate-icon-button"
-                onClick={handleGeneratePhrase}
-                title="Generate Unique Phrase"
-                aria-label="Generate unique phrase"
-              >
-                <FaSync className="generate-icon" />
-              </button>
+              {generatedPhrase && (
+                <button 
+                  type="button"
+                  className="generate-icon-button"
+                  onClick={handleCopyPhrase}
+                  title="Copy Unique Phrase"
+                  aria-label="Copy unique phrase"
+                >
+                  {isCopied ? <FaCheck className="generate-icon" /> : <FaCopy className="generate-icon" />}
+                </button>
+              )}
             </div>
             
             <button 
               type="submit" 
-              className="primary-button create-profile-button"
+              className="primary-button create-profile-button lime-button"
+              disabled={!username.trim() || !generatedPhrase}
             >
               <FaUserPlus /> Create Profile
             </button>
