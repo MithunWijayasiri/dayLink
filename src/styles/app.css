@@ -26,6 +26,13 @@
   padding: 0;
 }
 
+html, body {
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
 body {
   color: var(--text-color);
   background-color: #f9fafb; /* Light gray background */
