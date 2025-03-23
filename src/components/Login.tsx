@@ -185,7 +185,7 @@ const Login = () => {
                 onChange={(e) => {
                   setInputPhrase(e.target.value);
                 }}
-                placeholder="Enter your unique phrase"
+                placeholder="123X5-67Y9"
                 className="text-input lime-input"
               />
             </div>
