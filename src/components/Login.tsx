@@ -1,12 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
 import { useAppContext } from '../context/AppContext';
-import { FaKey, FaUserPlus, FaUser, FaSignInAlt, FaLock, FaShieldAlt, FaCopy, FaCheck } from 'react-icons/fa';
+import { FaKey, FaUserPlus, FaUser, FaSignInAlt, FaLock, FaCopy, FaCheck, FaDownload } from 'react-icons/fa';
 import { generateUniquePhrase } from '../utils/encryption';
 import toast from 'react-hot-toast';
 import Footer from './Footer';
 
 const Login = () => {
-  const { login, generateNewProfile, isNewUser, uniquePhrase } = useAppContext();
+  const { login, generateNewProfile, isNewUser, uniquePhrase, userProfile } = useAppContext();
   const [inputPhrase, setInputPhrase] = useState('');
   const [username, setUsername] = useState('');
   const [showNewUserInfo, setShowNewUserInfo] = useState(false);
@@ -66,6 +66,25 @@ const Login = () => {
     }
   };
 
+  const handleDownloadPhrase = () => {
+    if (uniquePhrase && userProfile?.username) {
+      const content = `Username: ${userProfile.username}\nUnique Phrase: ${uniquePhrase}`;
+      const blob = new Blob([content], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'dayLink Login.txt';
+      document.body.appendChild(a);
+      a.click();
+      
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      
+      toast.success('Login details downloaded as text file');
+    }
+  };
+
   const handleCreateProfile = (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -79,8 +98,11 @@ const Login = () => {
       return;
     }
     
-    // Use the already generated phrase
+    // Generate the new profile but don't automatically login
     generateNewProfile(username.trim(), generatedPhrase);
+    // Store the phrase in localStorage
+    localStorage.setItem('uniquePhrase', generatedPhrase);
+    // Show the new user info with the warning
     setShowNewUserInfo(true);
   };
 
@@ -98,17 +120,25 @@ const Login = () => {
         
         <div className="new-user-info">
           <h2>Your Unique Phrase</h2>
-          <div className="unique-phrase-display">{uniquePhrase}</div>
+          <div className="unique-phrase-display">
+            {uniquePhrase}
+            <button 
+              className="icon-button-inline"
+              onClick={handleDownloadPhrase}
+              title="Download login details"
+              aria-label="Download login details"
+            >
+              <FaDownload />
+            </button>
+          </div>
           <div className="warning">
-            <FaShieldAlt style={{ marginRight: '8px' }} />
-            <p><strong>IMPORTANT:</strong> Save this phrase somewhere safe. You will need it to access your meetings in the future.
+            <p><strong>IMPORTANT:</strong> Save this phrase safely. You will need it to access your account in the future.
             There is no way to recover this phrase if you lose it.</p>
           </div>
           <button 
             className="primary-button lime-button"
             onClick={() => {
-              // Store phrase in localStorage and login
-              localStorage.setItem('uniquePhrase', uniquePhrase);
+              // Set authentication to true and login with the phrase
               login(uniquePhrase);
             }}
           >
@@ -193,7 +223,7 @@ const Login = () => {
                 value={generatedPhrase}
                 readOnly
                 disabled={!generatedPhrase}
-                placeholder="Your unique phrase will appear here"
+                placeholder="Generated phrase"
                 className="text-input phrase-input lime-input"
                 aria-label="Generated unique phrase"
                 style={{ fontWeight: 'normal' }}

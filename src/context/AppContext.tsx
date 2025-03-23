@@ -79,7 +79,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     saveUserProfile(newProfile);
     setUserProfile(newProfile);
     setUniquePhrase(newPhrase);
-    setIsAuthenticated(true);
+    setIsAuthenticated(false);
     setIsNewUser(true);
   };
 
