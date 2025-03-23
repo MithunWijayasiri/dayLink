@@ -1,6 +1,6 @@
 // Types for the Meeting Scheduler application
 
-export type MeetingType = 'Google Meet' | 'Microsoft Teams' | 'Zoom';
+export type MeetingType = 'Google Meet' | 'Microsoft Teams' | 'Zoom' | 'Other';
 
 export type RecurringType = 'weekdays' | 'weekends' | 'specific';
 

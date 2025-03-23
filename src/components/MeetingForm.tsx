@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FaLink, FaClock, FaCalendarAlt, FaAlignLeft } from 'react-icons/fa';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -24,6 +24,36 @@ const MeetingForm = ({ meeting, onClose }: MeetingFormProps) => {
   );
   const [error, setError] = useState('');
 
+  // Detect meeting type based on URL
+  useEffect(() => {
+    if (!link) return;
+    
+    // Try to validate and parse the URL
+    try {
+      // Add protocol if missing to make URL parsing work
+      let urlToCheck = link;
+      if (!link.startsWith('http://') && !link.startsWith('https://')) {
+        urlToCheck = 'https://' + link;
+      }
+      
+      const url = new URL(urlToCheck);
+      const domain = url.hostname.toLowerCase();
+      
+      if (domain.includes('meet.google.com')) {
+        setType('Google Meet');
+      } else if (domain.includes('teams.microsoft.com')) {
+        setType('Microsoft Teams');
+      } else if (domain.includes('zoom.us')) {
+        setType('Zoom');
+      } else {
+        setType('Other');
+      }
+    } catch (e) {
+      // Invalid URL, set to Other
+      setType('Other');
+    }
+  }, [link]);
+
   const validateForm = () => {
     if (!link.trim()) {
       setError('Please enter a meeting link');
@@ -32,7 +62,13 @@ const MeetingForm = ({ meeting, onClose }: MeetingFormProps) => {
 
     // Basic URL validation
     try {
-      new URL(link);
+      // Add protocol if missing to make URL parsing work
+      let urlToCheck = link;
+      if (!link.startsWith('http://') && !link.startsWith('https://')) {
+        urlToCheck = 'https://' + link;
+      }
+      
+      new URL(urlToCheck);
     } catch (e) {
       setError('Please enter a valid URL (e.g., https://zoom.us/j/123456789)');
       return false;
@@ -88,24 +124,6 @@ const MeetingForm = ({ meeting, onClose }: MeetingFormProps) => {
       
       <form onSubmit={handleSubmit} className="meeting-form">
         <div className="form-group">
-          <label>Meeting Type</label>
-          <div className="meeting-type-options">
-            {(['Google Meet', 'Microsoft Teams', 'Zoom'] as MeetingType[]).map(meetingType => (
-              <label key={meetingType} className="radio-label">
-                <input
-                  type="radio"
-                  name="meetingType"
-                  value={meetingType}
-                  checked={type === meetingType}
-                  onChange={() => setType(meetingType)}
-                />
-                <span>{meetingType}</span>
-              </label>
-            ))}
-          </div>
-        </div>
-        
-        <div className="form-group">
           <label htmlFor="meetingLink">Meeting Link</label>
           <div className="input-group">
             <FaLink className="input-icon" />
@@ -121,6 +139,11 @@ const MeetingForm = ({ meeting, onClose }: MeetingFormProps) => {
               className="text-input"
             />
           </div>
+          {link && (
+            <div className="detected-meeting-type">
+              Detected Meeting Type: <strong>{type}</strong>
+            </div>
+          )}
         </div>
         
         <div className="form-group">
