@@ -1,5 +1,4 @@
 import { Toaster } from 'react-hot-toast';
-import { useState, useEffect } from 'react';
 import './App.css';
 import './styles/app.css';
 import { AppProvider, useAppContext } from './context/AppContext';
