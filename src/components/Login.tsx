@@ -72,6 +72,10 @@ const Login = () => {
   if (isNewUser && uniquePhrase && showNewUserInfo) {
     return (
       <div className="login-container">
+        <div className="app-branding">
+          <h1>dayLink</h1>
+          <p className="tagline">Meeting Scheduler</p>
+        </div>
         <div className="new-user-info">
           <h2>Your Unique Phrase</h2>
           <div className="unique-phrase-display">{uniquePhrase}</div>
@@ -97,7 +101,10 @@ const Login = () => {
   // Combined login and signup form
   return (
     <div className="login-container">
-      <h2>Meeting Scheduler</h2>
+      <div className="app-branding">
+        <h1>dayLink</h1>
+        <p className="tagline">Meeting Scheduler</p>
+      </div>
       
       <div className="login-signup-container">
         <div className="login-section">

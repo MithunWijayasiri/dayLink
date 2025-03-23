@@ -30,6 +30,62 @@ body {
   color: var(--text-color);
 }
 
+/* App Branding */
+.app-branding {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.app-branding h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-bottom: 0.25rem;
+  letter-spacing: -0.5px;
+  transition: var(--transition);
+}
+
+.app-branding h1:hover {
+  color: var(--primary-dark);
+  transform: translateY(0.5px);
+}
+
+.app-branding .tagline {
+  font-size: 1.1rem;
+  color: var(--light-text-color);
+  margin: 0;
+}
+
+/* Dashboard branding specific styles */
+.dashboard-branding {
+  text-align: left;
+  margin-bottom: 0;
+  cursor: pointer;
+}
+
+.dashboard-branding h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0;
+}
+
+.dashboard-branding .tagline {
+  font-size: 0.9rem;
+  transition: var(--transition);
+}
+
+.dashboard-branding:hover .tagline {
+  color: var(--secondary-color);
+}
+
+/* Responsive adjustments for dashboard branding */
+@media (max-width: 768px) {
+  .dashboard-branding {
+    text-align: center;
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+}
+
 /* Login Container */
 .login-container {
   max-width: 800px;

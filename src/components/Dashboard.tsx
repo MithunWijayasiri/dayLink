@@ -88,7 +88,10 @@ const Dashboard = () => {
   return (
     <div className="dashboard-container">
       <header className="dashboard-header">
-        <h1 className="site-title" onClick={navigateToDashboard}>Meeting Scheduler</h1>
+        <div className="app-branding dashboard-branding" onClick={navigateToDashboard}>
+          <h1>dayLink</h1>
+          <p className="tagline">Meeting Scheduler</p>
+        </div>
         
         <div className="header-right">
           <div className="header-actions">
