@@ -942,7 +942,12 @@ body {
 }
 
 .generate-icon {
-  font-size: 1.25rem;
+  font-size: 1rem;
+}
+
+.generate-icon-button {
+  width: 42px; 
+  padding: 8px;
 }
 
 .generate-icon-button:hover {
@@ -950,7 +955,9 @@ body {
 }
 
 .generate-icon-button:hover .generate-icon {
-  animation: spin 1s linear;
+  /* animation: spin 1s linear;  */
+  transform: scale(1.1); /* Add slight scaling on hover */
+  transition: transform 0.2s ease;
 }
 
 @keyframes spin {

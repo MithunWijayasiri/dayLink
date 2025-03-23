@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAppContext } from '../context/AppContext';
-import { FaKey, FaUserPlus, FaUser, FaSync } from 'react-icons/fa';
+import { FaKey, FaUserPlus, FaUser, FaSync, FaSignInAlt } from 'react-icons/fa';
 import { generateUniquePhrase } from '../utils/encryption';
 
 const Login = () => {
@@ -119,7 +119,7 @@ const Login = () => {
             {loginError && <p className="error-message">{loginError}</p>}
             
             <button type="submit" className="primary-button">
-              <FaKey /> Login
+              <FaSignInAlt /> Login
             </button>
           </form>
         </div>
