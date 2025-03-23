@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useAppContext } from '../context/AppContext';
-import { FaKey, FaUserPlus, FaUser, FaSync, FaSignInAlt } from 'react-icons/fa';
+import { FaKey, FaUserPlus, FaUser, FaSync, FaSignInAlt, FaLock } from 'react-icons/fa';
 import { generateUniquePhrase } from '../utils/encryption';
 import toast from 'react-hot-toast';
+import Footer from './Footer';
 
 const Login = () => {
   const { login, generateNewProfile, isNewUser, uniquePhrase } = useAppContext();
@@ -94,6 +95,17 @@ const Login = () => {
             Sign Up
           </button>
         </div>
+        
+        <div className="privacy-info">
+          <FaLock className="privacy-icon" />
+          <p>
+            <strong>Your Privacy Matters:</strong> All data is stored locally on your device. 
+            Your meeting information is encrypted and never sent to any server. 
+            We don't track your usage or collect personal information.
+          </p>
+        </div>
+        
+        <Footer />
       </div>
     );
   }
@@ -176,7 +188,7 @@ const Login = () => {
             
             <button 
               type="submit" 
-              className={`primary-button create-profile-button ${generatedPhrase ? 'ready' : ''}`}
+              className="primary-button"
             >
               <FaUserPlus /> Create Profile
             </button>
@@ -184,6 +196,16 @@ const Login = () => {
         </div>
       </div>
       
+      <div className="privacy-info">
+        <FaLock className="privacy-icon" />
+        <p>
+          <strong>Your Privacy Matters:</strong> All data is stored locally on your device. 
+          Your meeting information is encrypted and never sent to any server. 
+          We don't track your usage or collect personal information.
+        </p>
+      </div>
+      
+      <Footer />
     </div>
   );
 };
