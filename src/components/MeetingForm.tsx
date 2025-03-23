@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { FaLink, FaClock, FaCalendarAlt, FaAlignLeft, FaCalendarCheck, FaInfoCircle, FaTimes } from 'react-icons/fa';
+import { FaLink, FaClock, FaCalendarAlt, FaAlignLeft, FaCalendarCheck, FaTimes } from 'react-icons/fa';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Meeting, MeetingType, RecurringType } from '../types/index';

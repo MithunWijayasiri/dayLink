@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useAppContext } from '../context/AppContext';
 import { FaKey, FaUserPlus, FaUser, FaSignInAlt, FaLock, FaCopy, FaCheck, FaDownload } from 'react-icons/fa';
 import { generateUniquePhrase } from '../utils/encryption';
