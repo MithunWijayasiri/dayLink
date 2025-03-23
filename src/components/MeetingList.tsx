@@ -1,8 +1,11 @@
 import { useState, useRef, useEffect } from 'react';
-import { FaEdit, FaTrash, FaExternalLinkAlt, FaInfoCircle } from 'react-icons/fa';
+import { FaEdit, FaTrash, FaExternalLinkAlt, FaInfoCircle, FaLink } from 'react-icons/fa';
 import { Meeting } from '../types/index';
 import { useAppContext } from '../context/AppContext';
 import { formatDate, formatTime } from '../utils/meetingUtils';
+import meetSvg from '../assets/meet.svg';
+import teamsSvg from '../assets/teams.svg';
+import zoomSvg from '../assets/zoom.svg';
 
 interface MeetingListProps {
   onEditMeeting: (meetingId: string) => void;
@@ -31,13 +34,13 @@ const MeetingList = ({ onEditMeeting }: MeetingListProps) => {
   const getMeetingTypeIcon = (type: Meeting['type']) => {
     switch (type) {
       case 'Google Meet':
-        return '🟢'; // Green circle for Google Meet
+        return <img src={meetSvg} alt="Google Meet" width="24" height="24" />;
       case 'Microsoft Teams':
-        return '🟣'; // Purple circle for Microsoft Teams
+        return <img src={teamsSvg} alt="Microsoft Teams" width="24" height="24" />;
       case 'Zoom':
-        return '🔵'; // Blue circle for Zoom
+        return <img src={zoomSvg} alt="Zoom" width="24" height="24" />;
       default:
-        return '⚪'; // Default
+        return <FaLink size={24} />;
     }
   };
 
@@ -57,7 +60,12 @@ const MeetingList = ({ onEditMeeting }: MeetingListProps) => {
 
   // Function to open meeting link in a new tab
   const openMeetingLink = (link: string) => {
-    window.open(link, '_blank', 'noopener,noreferrer');
+    // Add protocol if it's missing
+    let urlToOpen = link;
+    if (!link.startsWith('http://') && !link.startsWith('https://')) {
+      urlToOpen = 'https://' + link;
+    }
+    window.open(urlToOpen, '_blank', 'noopener,noreferrer');
   };
 
   return (
@@ -74,24 +82,19 @@ const MeetingList = ({ onEditMeeting }: MeetingListProps) => {
         <ul className="meeting-list">
           {todaysMeetings.map(meeting => (
             <li key={meeting.id} className="meeting-item">
-              <div className="meeting-info">
-                <div className="meeting-row">
-                  <div className="meeting-type">
-                    <span className="meeting-icon">{getMeetingTypeIcon(meeting.type)}</span>
-                    <span className="meeting-type-text">{meeting.type}</span>
-                  </div>
-                  
-                  {meeting.description && (
-                    <div className="meeting-description">
-                      <FaInfoCircle className="description-icon" />
-                      <span>{meeting.description}</span>
-                    </div>
-                  )}
-                  
-                  <div className="meeting-time">
-                    {formatTime(meeting.time)}
-                  </div>
+              <div className="meeting-type">
+                {getMeetingTypeIcon(meeting.type)}
+              </div>
+              
+              {meeting.description && (
+                <div className="meeting-description">
+                  <FaInfoCircle className="description-icon" />
+                  <span>{meeting.description}</span>
                 </div>
+              )}
+              
+              <div className="meeting-time">
+                {formatTime(meeting.time)}
               </div>
               
               <div className="meeting-actions">
@@ -100,7 +103,7 @@ const MeetingList = ({ onEditMeeting }: MeetingListProps) => {
                   onClick={() => openMeetingLink(meeting.link)}
                   title="Join Meeting"
                 >
-                  <FaExternalLinkAlt />
+                  <FaExternalLinkAlt /> Join
                 </button>
                 
                 <button 

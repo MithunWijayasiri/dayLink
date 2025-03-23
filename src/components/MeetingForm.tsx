@@ -6,6 +6,22 @@ import { Meeting, MeetingType, RecurringType } from '../types/index';
 import { useAppContext } from '../context/AppContext';
 import { createMeeting, updateMeeting } from '../utils/meetingUtils';
 import { format } from 'date-fns';
+import meetSvg from '../assets/meet.svg';
+import teamsSvg from '../assets/teams.svg';
+import zoomSvg from '../assets/zoom.svg';
+
+// SVG Icons for meeting platforms
+const GoogleMeetIcon = () => (
+  <img src={meetSvg} alt="Google Meet" width="20" height="20" />
+);
+
+const TeamsIcon = () => (
+  <img src={teamsSvg} alt="Microsoft Teams" width="20" height="20" />
+);
+
+const ZoomIcon = () => (
+  <img src={zoomSvg} alt="Zoom" width="20" height="20" />
+);
 
 interface MeetingFormProps {
   meeting?: Meeting;
@@ -56,6 +72,20 @@ const MeetingForm = ({ meeting, onClose }: MeetingFormProps) => {
       setType('Other');
     }
   }, [link]);
+
+  // Get appropriate icon based on meeting type
+  const getMeetingTypeIcon = () => {
+    switch (type) {
+      case 'Google Meet':
+        return <GoogleMeetIcon />;
+      case 'Microsoft Teams':
+        return <TeamsIcon />;
+      case 'Zoom':
+        return <ZoomIcon />;
+      default:
+        return <FaLink size={16} />;
+    }
+  };
 
   const validateForm = () => {
     if (!link.trim()) {
@@ -136,7 +166,9 @@ const MeetingForm = ({ meeting, onClose }: MeetingFormProps) => {
         <div className="form-group">
           <label htmlFor="meetingLink">Meeting Link</label>
           <div className="input-group">
-            <FaLink className="input-icon" />
+            <span className="input-icon">
+              {link ? getMeetingTypeIcon() : <FaLink size={16} />}
+            </span>
             <input
               id="meetingLink"
               type="text"
@@ -149,11 +181,6 @@ const MeetingForm = ({ meeting, onClose }: MeetingFormProps) => {
               className="text-input"
             />
           </div>
-          {link && (
-            <div className="detected-meeting-type">
-              Detected Meeting Type: <strong>{type}</strong>
-            </div>
-          )}
         </div>
         
         <div className="form-group">

@@ -145,12 +145,26 @@ body {
   margin-top: -1rem;
 }
 
+/* Input icon styles */
 .input-icon {
   position: absolute;
   left: 10px;
   top: 50%;
   transform: translateY(-50%);
   color: var(--secondary-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+}
+
+/* Meeting form specific icon styles */
+.meeting-form .input-icon svg,
+.meeting-form .input-icon img {
+  display: block;
+  width: 20px;
+  height: 20px;
 }
 
 .text-input {
@@ -395,6 +409,7 @@ body {
   background-color: var(--success-color);
   color: white;
   border: none;
+  padding: 0.5rem 0.75rem;
 }
 
 .action-button.join:hover {
@@ -451,11 +466,12 @@ body {
 
 .meeting-item {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
+  align-items: center;
+  justify-content: flex-start;
   padding: 1rem;
   border-bottom: 1px solid var(--border-color);
   background-color: var(--form-bg-color);
+  gap: 1.25rem;
 }
 
 .meeting-item:hover {
@@ -466,39 +482,20 @@ body {
   border-bottom: none;
 }
 
-.meeting-info {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  flex: 1;
-}
-
-.meeting-row {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  width: 100%;
-  flex-wrap: wrap;
-}
-
 .meeting-type {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: center;
   color: var(--text-color);
   font-weight: 500;
-  min-width: 120px;
+  min-width: 40px;
 }
 
-.meeting-icon {
-  font-size: 1.5rem;
-  color: var(--primary-color);
-}
-
-.meeting-time {
-  font-weight: bold;
-  color: var(--text-color);
-  margin-left: auto;
+.meeting-type img,
+.meeting-type svg {
+  width: 24px;
+  height: 24px;
+  display: block;
 }
 
 .meeting-description {
@@ -508,22 +505,33 @@ body {
   font-size: 0.95rem;
   color: var(--light-text-color);
   flex: 1;
-  overflow-wrap: break-word;
-  word-break: break-word;
-  max-width: 50%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.meeting-description span {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .description-icon {
-  margin-top: 0.2rem;
   flex-shrink: 0;
   color: var(--secondary-color);
+}
+
+.meeting-time {
+  font-weight: bold;
+  color: var(--text-color);
+  margin-left: auto;
+  margin-right: 1.5rem;
+  white-space: nowrap;
 }
 
 .meeting-actions {
   display: flex;
   justify-content: flex-end;
   gap: 0.5rem;
-  margin-left: 1rem;
   flex-shrink: 0;
 }
 
@@ -958,32 +966,37 @@ body {
   }
   
   .meeting-item {
-    flex-direction: column;
-    gap: 1rem;
+    flex-wrap: wrap;
+    gap: 0.75rem;
   }
 
-  .meeting-row {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
+  .meeting-type {
+    margin-right: 0.5rem;
   }
 
-  .meeting-type,
-  .meeting-description,
-  .meeting-time {
-    width: 100%;
-    max-width: 100%;
+  .meeting-description {
+    order: 1;
+    min-width: 100%;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
   }
 
   .meeting-time {
+    order: 0;
     margin-left: 0;
-    order: -1;
+    margin-right: auto;
   }
 
   .meeting-actions {
     width: 100%;
+    order: 2;
     justify-content: flex-start;
-    margin-left: 0;
+    gap: 0.75rem;
+  }
+  
+  .action-button.join {
+    flex: 1;
+    max-width: 120px;
   }
 
   .button-group {
@@ -1109,6 +1122,7 @@ body {
   text-align: left;
   font-size: 0.9em;
   color: #555;
+  margin-top: 0.5rem;
 }
 
 /* Days of week selector container */
