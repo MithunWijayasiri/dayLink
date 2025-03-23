@@ -25,16 +25,15 @@ const Footer: React.FC = () => {
         href={EXTERNAL_LINKS.PORTFOLIO}
         target="_blank"
         rel="noopener noreferrer"
-        className="name-link"
+        className="author-link"
+        style={{ 
+          transition: 'color 0.3s ease' 
+        }}
+        onMouseOver={(e) => e.currentTarget.style.color = 'var(--primary-dark)'}
+        onMouseOut={(e) => e.currentTarget.style.color = ''}
       >
         Mithun Wijayasiri
       </a>
-
-      <style jsx>{`
-        .name-link:hover {
-          color: var(--primary-dark);
-        }
-      `}</style>
     </footer>
   );
 };
