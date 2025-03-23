@@ -561,8 +561,31 @@ body {
 .radio-label {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 1rem;
   cursor: pointer;
+  margin-right: 0.8rem;
+}
+
+/* Add styles for radio buttons to match light theme */
+.radio-label input[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--border-color);
+  border-radius: 50%;
+  background-color: var(--form-bg-color);
+  outline: none;
+  cursor: pointer;
+  margin-right: 0.2rem;
+}
+
+.radio-label input[type="radio"]:checked {
+  border: 4px solid var(--primary-color);
+}
+
+.radio-label span {
+  color: var(--text-color);
 }
 
 .date-picker-container {
@@ -575,6 +598,8 @@ body {
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
   font-size: 1rem;
+  background-color: var(--form-bg-color);
+  color: var(--text-color);
 }
 
 .selected-dates {
@@ -598,16 +623,25 @@ body {
 }
 
 .remove-date {
-  background-color: var(--danger-color);
-  color: white;
-  border: none;
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
+  background-color: transparent;
+  color: var(--secondary-color);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  width: 24px;
+  height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  font-size: 0.9rem;
+  transition: var(--transition);
+  margin-left: 8px;
+}
+
+.remove-date:hover {
+  background-color: var(--danger-color);
+  color: white;
+  border-color: var(--danger-color);
 }
 
 .time-input {
@@ -616,6 +650,8 @@ body {
   border: 1px solid var(--border-color);
   border-radius: var(--border-radius);
   font-size: 1rem;
+  background-color: var(--form-bg-color);
+  color: var(--text-color);
 }
 
 /* Profile Manager */
