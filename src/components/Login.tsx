@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useAppContext } from '../context/AppContext';
-import { FaKey, FaUserPlus, FaUser, FaSignInAlt, FaLock, FaUpload } from 'react-icons/fa';
+import { FaUserPlus, FaUser, FaSignInAlt, FaLock, FaUpload } from 'react-icons/fa'; // Removed FaKey
 import { generateUniquePhrase } from '../utils/encryption';
 import toast from 'react-hot-toast';
 import Footer from './Footer';
 
 const Login = () => {
-  const { login, generateNewProfile, isNewUser, uniquePhrase, userProfile } = useAppContext();
+  const { login, generateNewProfile, isNewUser, uniquePhrase } = useAppContext(); // Removed userProfile
   const [username, setUsername] = useState('');
   const [showNewUserInfo, setShowNewUserInfo] = useState(false);
   const [importFile, setImportFile] = useState<File | null>(null);
