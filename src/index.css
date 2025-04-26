@@ -70,3 +70,477 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+/* Added styles for the new login and profile components */
+.backup-reminder {
+  margin-top: 20px;
+  padding: 10px 15px;
+  background-color: #f8f9fa;
+  border: 1px solid #e3e3e3;
+  border-radius: 8px;
+  font-size: 0.9em;
+}
+
+.backup-reminder p {
+  margin: 0;
+  color: #555;
+}
+
+.text-button {
+  background: none;
+  color: #646cff;
+  border: none;
+  padding: 0 5px;
+  font-size: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.text-button:hover {
+  color: #535bf2;
+}
+
+.file-input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.success-message {
+  color: #28a745;
+  font-weight: 500;
+  margin-top: 10px;
+}
+
+.import-section {
+  margin-bottom: 25px;
+}
+
+/* Button container for consistent alignment */
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+  width: 100%;
+}
+
+.button-container .primary-button {
+  width: 100%;
+  justify-content: center;
+  max-width: 220px;
+  height: 48px;
+}
+
+/* Match heights between the two forms */
+.signup-form, .import-form {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.import-form .form-group {
+  flex-grow: 1;
+}
+
+/* Style for single line input with label */
+.input-row {
+  display: none;
+}
+
+.input-row label,
+.input-row .file-input {
+  display: none;
+}
+
+/* Make both sides of login page more consistent */
+.signup-section, .import-section {
+  display: none;
+}
+
+.login-signup-container {
+  display: none;
+}
+
+/* Fix error message appearance */
+.error-message {
+  color: #e53e3e;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.new-user-info {
+  max-width: 600px;
+  background-color: var(--card-bg-color);
+  padding: 2rem;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+.new-user-info h2 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--dark-color);
+  margin-bottom: 0.25rem;
+}
+
+.new-user-info p {
+  font-size: 1.1rem;
+  color: var(--light-text-color);
+  margin-bottom: 0.5rem;
+}
+
+.warning {
+  background-color: #fffbeb;
+  border: 1px solid #fef3c7;
+  border-radius: 8px;
+  padding: 1rem;
+  text-align: left;
+}
+
+.warning p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #92400e;
+  line-height: 1.5;
+}
+
+.warning strong {
+  color: #92400e;
+}
+
+/* Login Layout - match spacing exactly */
+.login-layout {
+  width: 100%;
+  margin: 0 auto;
+  max-width: 900px;
+}
+
+.login-panel {
+  display: flex;
+  gap: 2rem;
+  align-items: stretch;
+  margin-bottom: 2rem;
+}
+
+/* Make both cards exactly the same height and layout */
+.login-card {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  flex: 1;
+  align-items: center;
+  text-align: center;
+  height: 330px; /* Adjust to match the screenshot */
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.login-card h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #1a202c;
+}
+
+.login-card p {
+  color: #4a5568;
+  margin-bottom: 2rem;
+}
+
+/* Form layout to match screenshot */
+.signup-form, .import-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-grow: 1;
+}
+
+/* Input styling to match screenshot */
+.input-field {
+  position: relative;
+  margin-bottom: 1.25rem;
+  width: 100%;
+  max-width: 80%;
+  height: 48px;
+}
+
+.input-field .input-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #4a5568;
+}
+
+.input-field .text-input {
+  width: 100%;
+  height: 48px;
+  padding: 0.85rem 1rem 0.85rem 2.75rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.input-field .text-input:focus {
+  outline: none;
+  border-color: #c1ee10;
+  box-shadow: 0 0 0 3px rgba(193, 238, 16, 0.2);
+}
+
+/* File selector to match text input */
+.file-selector {
+  position: relative;
+  margin-bottom: 1.25rem;
+  width: 100%;
+  max-width: 80%;
+  height: 48px;
+}
+
+.file-selector .file-input {
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.file-selector .file-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0.85rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  text-align: center;
+  color: #4a5568;
+  background-color: white;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.file-selector:hover .file-label {
+  border-color: #c1ee10;
+}
+
+/* Button row adjusted for exact alignment */
+.button-row {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: auto;
+  padding-top: 2rem;
+}
+
+.button-row .primary-button {
+  width: 180px;
+  height: 48px;
+  border-radius: 24px;
+  background-color: #c1ee10;
+  color: #1a202c;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+}
+
+.button-row .primary-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(193, 238, 16, 0.25);
+}
+
+/* Login page styles */
+.new-user-info {
+  max-width: 600px;
+  background-color: var(--card-bg-color);
+  padding: 2rem;
+  border-radius: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+.new-user-info h2 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--dark-color);
+  margin-bottom: 0.25rem;
+}
+
+.new-user-info p {
+  font-size: 1.1rem;
+  color: var(--light-text-color);
+  margin-bottom: 0.5rem;
+}
+
+.privacy-info {
+  max-width: 900px;
+  margin: 0 auto 1rem;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  border: 1px solid #e3e3e3;
+}
+
+.privacy-icon {
+  color: #c1ee10;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+  margin-top: 0.2rem;
+}
+
+.privacy-info p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: #4a5568;
+}
+
+.privacy-info strong {
+  color: #1a202c;
+}
+
+/* Update the login container */
+.login-container {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 2rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+/* Centered input row */
+.centered-input-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+/* Adjust the input field for inline layout */
+.centered-input-row .input-field {
+  flex: 1;
+  margin-bottom: 0;
+  max-width: 60%;
+}
+
+/* File selector styling for inline layout */
+.file-selector {
+  position: relative;
+  flex: 1;
+  max-width: 60%;
+}
+
+.file-selector .file-input {
+  opacity: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.file-selector .file-label {
+  padding: 0.85rem 1rem;
+  border: 1px dashed #c1ee10;
+  border-radius: 8px;
+  text-align: center;
+  color: #4a5568;
+  background-color: rgba(193, 238, 16, 0.05);
+  transition: all 0.2s ease;
+  cursor: pointer;
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.file-selector:hover .file-label {
+  background-color: rgba(193, 238, 16, 0.1);
+  border-color: #c1ee10;
+}
+
+/* Adjust buttons in centered row */
+.centered-input-row .primary-button {
+  height: 48px;
+  min-width: 130px;
+  white-space: nowrap;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .centered-input-row {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .centered-input-row .input-field,
+  .file-selector {
+    max-width: 100%;
+    width: 100%;
+  }
+  
+  .centered-input-row .primary-button {
+    width: 100%;
+  }
+}
+
+/* Remove this conflicting style */
+.centered-input-row {
+  display: none;
+}
+
+/* Adjust mobile support */
+@media (max-width: 768px) {
+  .login-panel {
+    flex-direction: column;
+  }
+  
+  .login-card {
+    height: auto;
+    min-height: 280px;
+    padding: 1.5rem;
+  }
+  
+  .input-field,
+  .file-selector {
+    max-width: 100%;
+  }
+  
+  .button-row .primary-button {
+    width: 100%;
+  }
+}

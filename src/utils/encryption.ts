@@ -112,10 +112,42 @@ export const exportUserData = (profile: UserProfile): string => {
   return JSON.stringify(encrypted);
 };
 
+// Export user profile data including the profile itself with plaintext uniquePhrase for easier import
+export const exportUserProfile = (profile: UserProfile): string => {
+  // Create a copy of the profile to ensure we don't modify the original
+  const profileCopy = JSON.parse(JSON.stringify(profile));
+  
+  // Encrypt the profile data
+  const encrypted = encryptData(profileCopy, profile.uniquePhrase);
+  
+  // Create an export object that includes both the encrypted data and additional metadata
+  const exportObject = {
+    data: encrypted.data,
+    metadata: {
+      username: profile.username,
+      uniquePhrase: profile.uniquePhrase, // Include the phrase in plaintext for easy extraction
+      exportDate: new Date().toISOString()
+    }
+  };
+  
+  return JSON.stringify(exportObject);
+};
+
 // Import user data from a file
 export const importUserData = (jsonData: string, phrase: string): UserProfile | null => {
   try {
-    const encrypted = JSON.parse(jsonData) as EncryptedData;
+    const parsedData = JSON.parse(jsonData);
+    
+    // Check if this is the new format with metadata
+    if (parsedData.metadata && parsedData.data) {
+      // Use the phrase from metadata if available, otherwise use the provided phrase
+      const decryptPhrase = parsedData.metadata.uniquePhrase || phrase;
+      const encryptedData: EncryptedData = { data: parsedData.data };
+      return decryptData(encryptedData, decryptPhrase);
+    }
+    
+    // Old format - direct encrypted data
+    const encrypted = parsedData as EncryptedData;
     return decryptData(encrypted, phrase);
   } catch (error) {
     console.error('Failed to import user data:', error);

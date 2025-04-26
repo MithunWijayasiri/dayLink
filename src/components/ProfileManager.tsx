@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { FaDownload, FaUpload, FaTrash, FaCopy, FaArrowLeft } from 'react-icons/fa';
+import { FaDownload, FaTrash, FaArrowLeft, FaPencilAlt, FaSave, FaTimes } from 'react-icons/fa';
 import { useAppContext } from '../context/AppContext';
-import { exportUserData, importUserData } from '../utils/encryption';
+import { exportUserProfile } from '../utils/encryption';
 import { deleteUserProfile } from '../utils/meetingUtils';
 
 interface ProfileManagerProps {
@@ -9,70 +9,36 @@ interface ProfileManagerProps {
 }
 
 const ProfileManager = ({ onClose }: ProfileManagerProps) => {
-  const { userProfile, setUserProfileState, logout } = useAppContext();
-  const [importFile, setImportFile] = useState<File | null>(null);
-  const [importPhrase, setImportPhrase] = useState('');
-  const [importError, setImportError] = useState('');
+  const { userProfile, logout, setUserProfileState } = useAppContext();
   const [deleteConfirm, setDeleteConfirm] = useState(false);
-  const [copySuccess, setCopySuccess] = useState(false);
+  const [exportSuccess, setExportSuccess] = useState(false);
+  const [isEditingUsername, setIsEditingUsername] = useState(false);
+  const [newUsername, setNewUsername] = useState('');
+  const [updateSuccess, setUpdateSuccess] = useState(false);
 
   if (!userProfile) return null;
 
-  const handleExport = () => {
-    const exportData = exportUserData(userProfile);
-    const blob = new Blob([exportData], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    
-    // Create a temporary link and trigger download
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'meetings_data.meetings';
-    document.body.appendChild(a);
-    a.click();
-    
-    // Clean up
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  };
-
-  const handleImportChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0) {
-      setImportFile(e.target.files[0]);
-      setImportError('');
-    }
-  };
-
-  const handleImport = async () => {
-    if (!importFile) {
-      setImportError('Please select a file to import');
-      return;
-    }
-
-    if (!importPhrase.trim()) {
-      setImportError('Please enter the phrase used to encrypt this file');
-      return;
-    }
-
+  const handleExportProfile = () => {
     try {
-      const fileContent = await importFile.text();
-      const importedProfile = importUserData(fileContent, importPhrase.trim());
+      const exportData = exportUserProfile(userProfile);
+      const blob = new Blob([exportData], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
       
-      if (!importedProfile) {
-        setImportError('Invalid file or incorrect phrase');
-        return;
-      }
+      // Create a temporary link and trigger download
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${userProfile.username || 'user'}_profile.meetings`;
+      document.body.appendChild(a);
+      a.click();
       
-      setUserProfileState(importedProfile);
+      // Clean up
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
       
-      // Store the imported profile's phrase in localStorage
-      if (importedProfile.uniquePhrase) {
-        localStorage.setItem('uniquePhrase', importedProfile.uniquePhrase);
-      }
-      
-      onClose();
+      setExportSuccess(true);
+      setTimeout(() => setExportSuccess(false), 3000);
     } catch (error) {
-      console.error('Import error:', error);
-      setImportError('Failed to import file. Please check the file format.');
+      console.error('Export error:', error);
     }
   };
 
@@ -87,17 +53,32 @@ const ProfileManager = ({ onClose }: ProfileManagerProps) => {
     }
   };
 
-  const copyToClipboard = () => {
-    if (userProfile?.uniquePhrase) {
-      navigator.clipboard.writeText(userProfile.uniquePhrase)
-        .then(() => {
-          setCopySuccess(true);
-          setTimeout(() => setCopySuccess(false), 2000);
-        })
-        .catch(err => {
-          console.error('Failed to copy text: ', err);
-        });
-    }
+  const startEditingUsername = () => {
+    setNewUsername(userProfile.username || '');
+    setIsEditingUsername(true);
+  };
+
+  const cancelEditingUsername = () => {
+    setIsEditingUsername(false);
+    setNewUsername('');
+  };
+
+  const saveUsername = () => {
+    if (!newUsername.trim()) return;
+
+    // Update the user profile with the new username
+    const updatedProfile = {
+      ...userProfile,
+      username: newUsername.trim()
+    };
+
+    // Save the updated profile
+    setUserProfileState(updatedProfile);
+    setIsEditingUsername(false);
+    
+    // Show success message
+    setUpdateSuccess(true);
+    setTimeout(() => setUpdateSuccess(false), 3000);
   };
 
   return (
@@ -119,82 +100,68 @@ const ProfileManager = ({ onClose }: ProfileManagerProps) => {
           <div className="profile-detail-item">
             <div className="profile-detail-row">
               <span className="profile-detail-label">Username:</span>
-              <span className="profile-detail-value">
-                {userProfile.username || 'Not set'}
-              </span>
+              {isEditingUsername ? (
+                <div className="edit-field-container">
+                  <input
+                    type="text"
+                    className="edit-input"
+                    value={newUsername}
+                    onChange={(e) => setNewUsername(e.target.value)}
+                    placeholder="Enter username"
+                    autoFocus
+                  />
+                  <div className="edit-actions">
+                    <button 
+                      className="action-button edit"
+                      onClick={saveUsername}
+                      title="Save"
+                      disabled={!newUsername.trim()}
+                    >
+                      <FaSave />
+                    </button>
+                    <button 
+                      className="action-button delete"
+                      onClick={cancelEditingUsername}
+                      title="Cancel"
+                    >
+                      <FaTimes />
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="profile-value-container">
+                  <span className="profile-detail-value">
+                    {userProfile.username || 'Not set'}
+                  </span>
+                  <button 
+                    className="edit-button"
+                    onClick={startEditingUsername}
+                    aria-label="Edit username"
+                  >
+                    <FaPencilAlt />
+                  </button>
+                </div>
+              )}
             </div>
-          </div>
-          <div className="profile-detail-item">
-            <div className="profile-detail-row">
-              <span className="profile-detail-label">Your ID:</span>
-              <span className="unique-id-value">
-                {userProfile.uniquePhrase}
-                <button 
-                  className="copy-button" 
-                  onClick={copyToClipboard}
-                  title="Copy to clipboard"
-                >
-                  <FaCopy />
-                  {copySuccess && <span className="copy-tooltip">Copied!</span>}
-                </button>
-              </span>
-            </div>
+            {updateSuccess && (
+              <div className="success-message">Username updated successfully!</div>
+            )}
           </div>
         </div>
       </div>
       
       <div className="profile-section">
-        <h3>Export Meeting Data</h3>
-        <p>Download your encrypted meeting data as a file. You'll need your unique phrase to import it later.</p>
+        <h3>Export Profile</h3>
+        <p>Download your profile data including all meetings. You'll need this file to recover your account if you change browsers or clear your cache.</p>
         <div className="center-button-container">
-          <button 
-            className="primary-button export-button"
-            onClick={handleExport}
-          >
-            <FaDownload /> Export Data
-          </button>
-        </div>
-      </div>
-      
-      <div className="profile-section">
-        <h3>Import Meeting Data</h3>
-        <p>Import meeting data from a previously exported file.</p>
-        
-        <div className="import-form">
-          <div className="form-group">
-            <label htmlFor="importFile">Select File</label>
-            <input 
-              type="file" 
-              id="importFile" 
-              accept=".meetings,application/json" 
-              onChange={handleImportChange} 
-            />
-          </div>
-          
-          <div className="form-group">
-            <label htmlFor="importPhrase">Enter Phrase</label>
-            <input 
-              type="text" 
-              id="importPhrase" 
-              value={importPhrase}
-              onChange={(e) => {
-                setImportPhrase(e.target.value);
-                setImportError('');
-              }}
-              placeholder="Enter the phrase used to encrypt this file"
-              className="text-input"
-            />
-          </div>
-          
-          {importError && <p className="error-message">{importError}</p>}
-          
-          <div className="center-button-container">
+          <div className="export-section">
             <button 
-              className="primary-button import-button"
-              onClick={handleImport}
+              className="primary-button export-button"
+              onClick={handleExportProfile}
             >
-              <FaUpload /> Import Data
+              <FaDownload /> Export Profile
             </button>
+            {exportSuccess && <p className="success-message">Profile exported successfully!</p>}
           </div>
         </div>
       </div>

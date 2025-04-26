@@ -1969,3 +1969,73 @@ input[type="file"] {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(220, 53, 69, 0.25);
 }
+
+/* Profile editing styles */
+.profile-value-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.edit-button {
+  background-color: transparent;
+  border: none;
+  color: var(--primary-color);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  padding: 0.35rem;
+  border-radius: 50%;
+  transition: var(--transition);
+  opacity: 0.7;
+}
+
+.edit-button:hover {
+  opacity: 1;
+  background-color: rgba(193, 238, 16, 0.1);
+  transform: scale(1.1);
+}
+
+.edit-field-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  max-width: 500px;
+}
+
+.edit-input {
+  padding: 0.6rem 0.8rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  font-size: 0.95rem;
+  flex: 1;
+  min-width: 200px;
+  transition: var(--transition);
+}
+
+.edit-input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(193, 238, 16, 0.2);
+}
+
+.edit-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.success-message {
+  color: var(--success-color);
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.export-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}

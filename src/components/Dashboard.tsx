@@ -183,6 +183,16 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
+
+          <div className="backup-reminder">
+            <p>
+              <strong>Remember:</strong> Your data is stored in your browser. 
+              <button className="text-button" onClick={handleManageProfile}>
+                Export your profile
+              </button> 
+              to backup your data.
+            </p>
+          </div>
         </div>
       )}
 
