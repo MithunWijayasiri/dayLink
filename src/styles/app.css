@@ -17,6 +17,8 @@
   --button-radius: 24px; /* Pills for buttons */
   --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); /* Softer shadow */
   --transition: all 0.3s ease;
+  --text-primary: var(--text-color);
+  --text-secondary: var(--light-text-color);
 }
 
 /* Reset some browser defaults */
@@ -126,6 +128,79 @@ body {
   gap: 2.5rem;
 }
 
+/* Consistent input group styling for login/signup/import */
+.input-group {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-secondary);
+  font-size: 1rem;
+  pointer-events: none;
+}
+
+.text-input, .file-label {
+  width: 100%;
+  padding: 0.85rem 1rem 0.85rem 2.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  color: var(--text-primary);
+  background-color: #fff;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+  line-height: 1.5;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.text-input:focus, .file-label:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(193, 238, 16, 0.2);
+}
+
+.file-label {
+  cursor: pointer;
+  display: block;
+  position: relative;
+  margin-bottom: 0;
+}
+
+.file-label:hover {
+  border-color: var(--primary-color);
+}
+
+.file-input {
+  border: 0;
+  clip: rect(0, 0, 0, 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+  white-space: nowrap;
+}
+
+.button-row {
+  width: 100%;
+  display: flex;
+}
+
+.button-row .primary-button {
+  width: 100%;
+}
+
 .login-signup-container {
   display: flex;
   width: 100%;
@@ -147,13 +222,22 @@ body {
 .login-section h3, .signup-section h3 {
   font-size: 1.5rem;
   font-weight: 600;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0; /* Rely on parent flex gap */
   color: var(--dark-color);
+  line-height: 1.2; /* Consistent line height */
+  height: 1.8rem; /* Consistent height (1.5rem * 1.2) */
+  display: flex;
+  align-items: center; /* Vertically center text if height is more than one line */
 }
 
 .login-section p, .signup-section p {
-  color: var(--text-secondary);
-  margin-bottom: 1.5rem;
+  color: var(--light-text-color); /* Consistent with :root variable */
+  margin-bottom: 0; /* Rely on parent flex gap */
+  font-size: 0.9rem; /* Explicit font-size for consistency */
+  line-height: 1.3; /* Consistent line height */
+  height: 1.3rem; /* Consistent height (0.9rem * 1.3, rounded up slightly) */
+  display: flex;
+  align-items: center; /* Vertically center text */
 }
 
 .login-form, .signup-form {
