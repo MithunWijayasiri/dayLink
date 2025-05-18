@@ -1,9 +1,25 @@
 # Day Link
 
-A lightweight, client-side meeting scheduler that lets you manage daily meetings with ease. Display today’s schedule, add meetings with custom links, and edit or delete them—all stored locally in your browser. Secure your data with a unique phrase, export/import encrypted files, and enjoy a simple, privacy-first experience with no server required.
+Day Link is a lightweight, privacy-first meeting scheduler that runs entirely in your browser. Effortlessly manage your daily meetings: view today’s schedule, add meetings with custom links, and edit or delete them—all with your data stored locally (no servers, no accounts).
 
-> [!WARNING]
-> This project is in its initial development stage. Expect bugs and incomplete features as we work toward a stable release. Use at your own risk!
+- **Local & Secure:** All data is saved in your browser and can be encrypted with your own passphrase.
+- **Easy Import/Export:** Backup or transfer your schedule with encrypted files.
+- **Simple & Fast:** No sign-up, no ads, no tracking—just a clean, focused experience.
+
+> **Warning:** This project is in early development. Features may change and bugs may exist. Use at your own risk!
+
+---
+
+## Tech Stack
+
+- **React** + **TypeScript** + **Vite**
+- Modern ESLint config for type safety and code quality
+
+---
+
+## Development
+
+See below for recommended ESLint and TypeScript settings.
 
 ## React + TypeScript + Vite
 
