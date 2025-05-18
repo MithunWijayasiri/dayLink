@@ -6,16 +6,13 @@ Day Link is a lightweight, privacy-first meeting scheduler that runs entirely in
 - **Easy Import/Export:** Backup or transfer your schedule with encrypted files.
 - **Simple & Fast:** No sign-up, no ads, no tracking—just a clean, focused experience.
 
-> **Warning:** This project is in early development. Features may change and bugs may exist. Use at your own risk!
-
----
+> [!WARNING]
+> This project is in early development. Features may change and bugs may exist. Use at your own risk!
 
 ## Tech Stack
 
 - **React** + **TypeScript** + **Vite**
 - Modern ESLint config for type safety and code quality
-
----
 
 ## Development
 

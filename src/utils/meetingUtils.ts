@@ -104,10 +104,14 @@ export const getTodaysMeetings = (profile: UserProfile): Meeting[] => {
     if (meeting.recurringType === 'weekdays') {
       return !isWeekendToday;
     }
-    
-    // Check for weekends (Saturday-Sunday)
+      // Check for weekends (Saturday-Sunday)
     if (meeting.recurringType === 'weekends') {
       return isWeekendToday;
+    }
+    
+    // Check for everyday meetings
+    if (meeting.recurringType === 'everyday') {
+      return true;
     }
     
     return false;

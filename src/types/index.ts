@@ -2,7 +2,7 @@
 
 export type MeetingType = 'Google Meet' | 'Microsoft Teams' | 'Zoom' | 'Other';
 
-export type RecurringType = 'weekdays' | 'weekends' | 'specific' | 'specificDays';
+export type RecurringType = 'everyday' | 'weekdays' | 'weekends' | 'specific' | 'specificDays';
 
 export interface Meeting {
   id: string;

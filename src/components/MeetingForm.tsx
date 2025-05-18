@@ -201,7 +201,7 @@ const MeetingForm = ({ meeting, onClose }: MeetingFormProps) => {
         <div className="form-group">
           <label>Meeting Schedule</label>
           <div className="recurring-type-options">
-            {(['weekdays', 'weekends', 'specificDays', 'specific'] as RecurringType[]).map(type => (
+            {(['everyday', 'weekdays', 'weekends', 'specificDays', 'specific'] as RecurringType[]).map(type => (
               <label key={type} className="radio-label">
                 <input
                   type="radio"
@@ -213,8 +213,9 @@ const MeetingForm = ({ meeting, onClose }: MeetingFormProps) => {
                     setError('');
                   }}
                 />
-                <span>{type === 'weekdays' ? 'Every Weekday' : 
-                       type === 'weekends' ? 'Every Weekend' : 
+                <span>{type === 'everyday' ? 'Everyday' :
+                       type === 'weekdays' ? 'Weekdays' : 
+                       type === 'weekends' ? 'Weekends' : 
                        type === 'specificDays' ? 'Specific Days' :
                        'Specific Dates'}</span>
               </label>
@@ -260,8 +261,10 @@ const MeetingForm = ({ meeting, onClose }: MeetingFormProps) => {
                         type="button" 
                         className="remove-date"
                         onClick={() => setSpecificDates(specificDates.filter((_, i) => i !== index))}
+                        aria-label="Remove date"
+                        style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
                       >
-                        <FaTimes />
+                        <FaTimes style={{ color: '#ff4d4f', fontSize: '1.2em' }} />
                       </button>
                     </li>
                   ))}
