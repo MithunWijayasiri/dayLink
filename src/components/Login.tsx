@@ -6,7 +6,7 @@ import toast from 'react-hot-toast';
 import Footer from './Footer';
 
 const Login = () => {
-  const { login, generateNewProfile, isNewUser, uniquePhrase, userProfile, loading } = useAppContext(); // Added userProfile and loading
+  const { login, generateNewProfile, isNewUser, userProfile, loading } = useAppContext();
   const [username, setUsername] = useState('');
   const [showNewUserInfo, setShowNewUserInfo] = useState(false);
   const [localUniquePhrase, setLocalUniquePhrase] = useState<string | null>(null); // For the new user screen

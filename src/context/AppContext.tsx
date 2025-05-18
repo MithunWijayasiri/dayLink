@@ -13,6 +13,7 @@ interface AppContextType {
   todaysMeetings: Meeting[];
   uniquePhrase: string | null;
   isNewUser: boolean;
+  loading: boolean;
   login: (phrase: string) => boolean;
   logout: () => void;
   generateNewProfile: (username?: string, customPhrase?: string) => void;
@@ -40,12 +41,15 @@ export const AppProvider = ({ children }: AppProviderProps) => {
   const [todaysMeetings, setTodaysMeetings] = useState<Meeting[]>([]);
   const [uniquePhrase, setUniquePhrase] = useState<string | null>(null);
   const [isNewUser, setIsNewUser] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   // Check for existing phrase in localStorage on mount
   useEffect(() => {
     const storedPhrase = localStorage.getItem('uniquePhrase');
     if (storedPhrase) {
+      setLoading(true);
       login(storedPhrase);
+      setLoading(false);
     }
   }, []);
 
@@ -55,15 +59,20 @@ export const AppProvider = ({ children }: AppProviderProps) => {
   }, [userProfile]);
 
   const login = (phrase: string): boolean => {
-    const profile = getUserProfile(phrase);
-    if (profile) {
-      setUserProfile(profile);
-      setUniquePhrase(phrase);
-      setIsAuthenticated(true);
-      setIsNewUser(false);
-      return true;
+    setLoading(true);
+    try {
+      const profile = getUserProfile(phrase);
+      if (profile) {
+        setUserProfile(profile);
+        setUniquePhrase(phrase);
+        setIsAuthenticated(true);
+        setIsNewUser(false);
+        return true;
+      }
+      return false;
+    } finally {
+      setLoading(false);
     }
-    return false;
   };
 
   const logout = () => {
@@ -102,6 +111,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     todaysMeetings,
     uniquePhrase,
     isNewUser,
+    loading,
     login,
     logout,
     generateNewProfile,
