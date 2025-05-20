@@ -1,9 +1,8 @@
 import CryptoJS from 'crypto-js';
 import { EncryptedData, UserProfile } from '../types/index';
 
-// Generate a random unique phrase for new users
+// Generates a random unique phrase for user identification (format: XXXXX-XXXXX)
 export const generateUniquePhrase = (): string => {
-  // Generate a random string with letters and numbers
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
   const length = 10;
   let result = '';
@@ -19,7 +18,7 @@ export const generateUniquePhrase = (): string => {
   return result;
 };
 
-// Create a hash of the unique phrase to use as a storage key
+// Hashes the unique phrase for secure storage key generation
 export const hashPhrase = (phrase: string): string => {
   try {
     return CryptoJS.SHA256(phrase).toString();
@@ -30,7 +29,7 @@ export const hashPhrase = (phrase: string): string => {
   }
 };
 
-// Encrypt data with the unique phrase
+// Encrypts user profile data using AES encryption
 export const encryptData = (data: UserProfile, phrase: string): EncryptedData => {
   try {
     const jsonString = JSON.stringify(data);
@@ -87,21 +86,16 @@ export const getUserProfile = (phrase: string): UserProfile | null => {
 
 // Save phrase to session storage for current session
 export const savePhraseToSession = (phrase: string): void => {
-  // This function is deprecated - using localStorage directly instead
-  console.warn('savePhraseToSession is deprecated. Use localStorage directly.');
+    console.warn('savePhraseToSession is deprecated. Use localStorage directly.');
   sessionStorage.setItem('meeting_scheduler_phrase', phrase);
 };
 
-// Get phrase from session storage
 export const getPhraseFromSession = (): string | null => {
-  // This function is deprecated - using localStorage directly instead
   console.warn('getPhraseFromSession is deprecated. Use localStorage directly.');
   return sessionStorage.getItem('meeting_scheduler_phrase');
 };
 
-// Clear phrase from session storage (logout)
 export const clearPhraseFromSession = (): void => {
-  // This function is deprecated - using localStorage directly instead
   console.warn('clearPhraseFromSession is deprecated. Use localStorage directly.');
   sessionStorage.removeItem('meeting_scheduler_phrase');
 };
@@ -112,9 +106,8 @@ export const exportUserData = (profile: UserProfile): string => {
   return JSON.stringify(encrypted);
 };
 
-// Export user profile data including the profile itself with plaintext uniquePhrase for easier import
+// Exports user profile with metadata in plaintext for easier importing
 export const exportUserProfile = (profile: UserProfile): string => {
-  // Create a copy of the profile to ensure we don't modify the original
   const profileCopy = JSON.parse(JSON.stringify(profile));
   
   // Encrypt the profile data

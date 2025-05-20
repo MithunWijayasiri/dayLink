@@ -1,4 +1,4 @@
-// Types for the Meeting Scheduler application
+// Type definitions for the Meeting Scheduler application
 
 export type MeetingType = 'Google Meet' | 'Microsoft Teams' | 'Zoom' | 'Other';
 
@@ -8,21 +8,21 @@ export interface Meeting {
   id: string;
   type: MeetingType;
   link: string;
-  description?: string; // Optional meeting description
+  description?: string;
   recurringType: RecurringType;
-  specificDates?: string[]; // ISO date strings (YYYY-MM-DD)
-  specificDays?: string[]; // Days of the week (Monday, Tuesday, etc.)
-  time: string; // 24-hour format (HH:MM)
-  createdAt: string; // ISO date string
-  updatedAt: string; // ISO date string
+  specificDates?: string[];  // Format: YYYY-MM-DD
+  specificDays?: string[];   // Format: Monday, Tuesday, etc.
+  time: string;             // Format: HH:MM (24-hour)
+  createdAt: string;        // ISO date string
+  updatedAt: string;        // ISO date string
 }
 
 export interface UserProfile {
-  uniquePhrase: string;
+  uniquePhrase: string;     // Unique identifier and encryption key
   username?: string;
   meetings: Meeting[];
 }
 
 export interface EncryptedData {
-  data: string; // Encrypted JSON string
+  data: string;             // AES encrypted JSON string
 }

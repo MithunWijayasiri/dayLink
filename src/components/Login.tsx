@@ -9,18 +9,18 @@ const Login = () => {
   const { login, generateNewProfile, isNewUser, userProfile, loading } = useAppContext();
   const [username, setUsername] = useState('');
   const [showNewUserInfo, setShowNewUserInfo] = useState(false);
-  const [localUniquePhrase, setLocalUniquePhrase] = useState<string | null>(null); // For the new user screen
-  const [localUsername, setLocalUsername] = useState<string>(''); // For the new user screen
+  const [localUniquePhrase, setLocalUniquePhrase] = useState<string | null>(null);
+  const [localUsername, setLocalUsername] = useState<string>(''); 
 
   const [importFile, setImportFile] = useState<File | null>(null);
   const [importError, setImportError] = useState('');
   
   useEffect(() => {
-    // Only attempt auto-login if not showing new user info and no user is already logged in
+    // Auto-login if not new user screen and not already logged in.
     if (!showNewUserInfo && !userProfile && !loading) {
       const storedPhrase = localStorage.getItem('uniquePhrase');
       if (storedPhrase) {
-        login(storedPhrase); // This will navigate if successful via AppContext
+        login(storedPhrase); 
       }
     }
   }, [showNewUserInfo, userProfile, loading, login]); 
@@ -39,7 +39,7 @@ const Login = () => {
     }
     
     const newPhrase = generateUniquePhrase();
-    generateNewProfile(username.trim(), newPhrase); // This updates context's uniquePhrase and isNewUser
+    generateNewProfile(username.trim(), newPhrase);
     
     // Store the phrase in localStorage for persistence
     localStorage.setItem('uniquePhrase', newPhrase);
@@ -48,7 +48,6 @@ const Login = () => {
     setLocalUniquePhrase(newPhrase);
     setLocalUsername(username.trim());
     setShowNewUserInfo(true);
-    // Do NOT call login() here. Let the user click "Continue".
   };
 
   const handleImportChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -102,14 +101,13 @@ const Login = () => {
       }
       
       localStorage.setItem('uniquePhrase', extractedPhrase);
-      const success = login(extractedPhrase); // AppContext's login will handle navigation
+      const success = login(extractedPhrase); 
       
       if (!success) {
         setImportError('Invalid or corrupted profile data. Login failed.');
         localStorage.removeItem('uniquePhrase'); // Clean up if login fails
       } else {
         toast.success('Profile imported successfully! Redirecting to dashboard...');
-        // Navigation is handled by the login function in AppContext
       }
     } catch (error) {
       console.error('Import error:', error);
@@ -117,8 +115,7 @@ const Login = () => {
     }
   };
 
-  // Display the new profile information after generation
-  // Uses localUniquePhrase and isNewUser from context (which should be set by generateNewProfile)
+  // Display new profile information
   if (showNewUserInfo && localUniquePhrase && isNewUser) {
     return (
       <div className="login-container">
@@ -131,7 +128,7 @@ const Login = () => {
         </div>
         
         <div className="new-user-info">
-          <h2>Welcome, {localUsername}!</h2> {/* Use localUsername */}
+          <h2>Welcome, {localUsername}!</h2>
           <p>Your profile has been created successfully.</p>
           <div className="warning">
             <p><strong>IMPORTANT:</strong> Remember to export your profile from the dashboard to back up your data. This is crucial for recovering your account if you switch browsers or clear your browser's cache.</p>
@@ -139,11 +136,9 @@ const Login = () => {
           <button 
             className="primary-button"
             onClick={() => {
-              // Now, login with the generated phrase to set userProfile and navigate
               if (localUniquePhrase) {
-                login(localUniquePhrase); // This will set userProfile and trigger navigation via AppContext
+                login(localUniquePhrase);
               }
-              // setShowNewUserInfo(false); // No longer needed here, navigation will occur
             }}
           >
             <FaSignInAlt /> Continue to Dashboard
@@ -155,11 +150,9 @@ const Login = () => {
     );
   }
 
-  // If already logged in (e.g., from auto-login or previous session that didn't clear),
-  // App.tsx should handle redirection. This Login component should not render its main form.
-  // However, a loading state or null can be returned if AppContext is still processing.
+  // If logged in/loading, App.tsx handles redirection
   if (loading || userProfile) {
-      return null; // Or a loading spinner if preferred: <div className="loading-spinner">Loading...</div>
+      return null;
   }
 
 

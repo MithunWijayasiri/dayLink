@@ -10,7 +10,6 @@ import meetSvg from '../assets/meet.svg';
 import teamsSvg from '../assets/teams.svg';
 import zoomSvg from '../assets/zoom.svg';
 
-// SVG Icons for meeting platforms
 const GoogleMeetIcon = () => (
   <img src={meetSvg} alt="Google Meet" width="20" height="20" />
 );
@@ -43,13 +42,11 @@ const MeetingForm = ({ meeting, onClose }: MeetingFormProps) => {
   );
   const [error, setError] = useState('');
 
-  // Detect meeting type based on URL
+  // Auto-detects meeting platform type from the meeting link URL
   useEffect(() => {
     if (!link) return;
     
-    // Try to validate and parse the URL
     try {
-      // Add protocol if missing to make URL parsing work
       let urlToCheck = link;
       if (!link.startsWith('http://') && !link.startsWith('https://')) {
         urlToCheck = 'https://' + link;
@@ -68,12 +65,11 @@ const MeetingForm = ({ meeting, onClose }: MeetingFormProps) => {
         setType('Other');
       }
     } catch (e) {
-      // Invalid URL, set to Other
       setType('Other');
     }
   }, [link]);
 
-  // Get appropriate icon based on meeting type
+  // Returns the icon component for the current meeting platform
   const getMeetingTypeIcon = () => {
     switch (type) {
       case 'Google Meet':
@@ -87,15 +83,14 @@ const MeetingForm = ({ meeting, onClose }: MeetingFormProps) => {
     }
   };
 
+  // Validates the form data before submission
   const validateForm = () => {
     if (!link.trim()) {
       setError('Please enter a meeting link');
       return false;
     }
 
-    // Basic URL validation
     try {
-      // Add protocol if missing to make URL parsing work
       let urlToCheck = link;
       if (!link.startsWith('http://') && !link.startsWith('https://')) {
         urlToCheck = 'https://' + link;

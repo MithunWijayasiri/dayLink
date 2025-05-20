@@ -23,6 +23,7 @@ interface AppContextType {
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
+// Hook to access the app context, throws if used outside AppProvider
 export const useAppContext = () => {
   const context = useContext(AppContext);
   if (!context) {
@@ -43,7 +44,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
   const [isNewUser, setIsNewUser] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // Check for existing phrase in localStorage on mount
+  // Restores session from local storage on mount
   useEffect(() => {
     const storedPhrase = localStorage.getItem('uniquePhrase');
     if (storedPhrase) {
@@ -53,7 +54,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     }
   }, []);
 
-  // Update today's meetings whenever the user profile changes
+  // Refreshes today's meetings when user profile changes
   useEffect(() => {
     refreshMeetings();
   }, [userProfile]);

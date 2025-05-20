@@ -3,7 +3,7 @@ import { format, isWeekend } from 'date-fns';
 import { Meeting, MeetingType, RecurringType, UserProfile } from '../types/index';
 import { saveUserProfile } from './encryption';
 
-// Create a new meeting
+// Creates a new meeting in the user's profile and returns the updated profile
 export const createMeeting = (
   profile: UserProfile,
   type: MeetingType,
@@ -38,7 +38,7 @@ export const createMeeting = (
   return updatedProfile;
 };
 
-// Update an existing meeting
+// Updates an existing meeting with the given updates and returns the updated profile
 export const updateMeeting = (
   profile: UserProfile,
   meetingId: string,
@@ -66,7 +66,7 @@ export const updateMeeting = (
   return updatedProfile;
 };
 
-// Delete a meeting
+// Deletes a meeting and returns the updated profile
 export const deleteMeeting = (
   profile: UserProfile,
   meetingId: string
@@ -82,12 +82,12 @@ export const deleteMeeting = (
   return updatedProfile;
 };
 
-// Get today's meetings
+// Returns a sorted list of today's meetings based on recurring patterns and specific dates
 export const getTodaysMeetings = (profile: UserProfile): Meeting[] => {
   const today = new Date();
   const isWeekendToday = isWeekend(today);
   const todayStr = format(today, 'yyyy-MM-dd');
-  const dayOfWeek = format(today, 'EEEE'); // Returns day name like "Monday"
+  const dayOfWeek = format(today, 'EEEE');
   
   return profile.meetings.filter(meeting => {
     // Check for specific dates
@@ -128,8 +128,7 @@ export const formatDate = (date: Date = new Date()): string => {
 
 // Format time for display
 export const formatTime = (time: string): string => {
-  // Convert 24-hour format to 12-hour format
-  const [hours, minutes] = time.split(':');
+    const [hours, minutes] = time.split(':');
   const hour = parseInt(hours, 10);
   const ampm = hour >= 12 ? 'PM' : 'AM';
   const hour12 = hour % 12 || 12;

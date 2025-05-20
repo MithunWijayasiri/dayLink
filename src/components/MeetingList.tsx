@@ -15,8 +15,7 @@ const MeetingList = ({ onEditMeeting }: MeetingListProps) => {
   const { todaysMeetings, userProfile, setUserProfileState } = useAppContext();
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
   const deleteConfirmRef = useRef<HTMLDivElement>(null);
-
-  // Close confirm dialog when clicking outside
+  // Handles clicking outside delete confirmation dialog to close it
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (deleteConfirmRef.current && !deleteConfirmRef.current.contains(event.target as Node)) {
@@ -29,8 +28,7 @@ const MeetingList = ({ onEditMeeting }: MeetingListProps) => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
-
-  // Function to get the appropriate icon for the meeting type
+  // Returns the platform-specific icon for each meeting type
   const getMeetingTypeIcon = (type: Meeting['type']) => {
     switch (type) {
       case 'Google Meet':
@@ -43,8 +41,7 @@ const MeetingList = ({ onEditMeeting }: MeetingListProps) => {
         return <FaLink size={24} />;
     }
   };
-
-  // Function to handle meeting deletion
+  // Deletes a meeting from the user's profile after confirmation
   const handleDelete = (meetingId: string) => {
     if (!userProfile) return;
 

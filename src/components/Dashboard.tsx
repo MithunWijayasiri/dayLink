@@ -62,7 +62,7 @@ const Dashboard = () => {
     setEditMeeting(null);
   };
   
-  // Close menu when clicking outside
+    // Handles clicking outside menus to close them
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
