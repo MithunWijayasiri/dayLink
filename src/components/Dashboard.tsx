@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { FaPlus, FaCog, FaSignOutAlt, FaBars, FaCalendarAlt, FaCheckCircle, FaClock } from 'react-icons/fa';
+import { FaPlus, FaCog, FaSignOutAlt, FaBars, FaCalendarAlt, FaCheckCircle } from 'react-icons/fa';
 import { useAppContext } from '../context/AppContext';
 import MeetingList from './MeetingList';
 import MeetingForm from './MeetingForm';
@@ -170,16 +170,6 @@ const Dashboard = () => {
               <div className="stat-details">
                 <div className="stat-value">{upcomingMeetings}</div>
                 <div className="stat-label">Upcoming</div>
-              </div>
-            </div>
-            
-            <div className="stat-card">
-              <div className="stat-icon">
-                <FaClock />
-              </div>
-              <div className="stat-details">
-                <div className="stat-value">{new Date().toLocaleDateString()}</div>
-                <div className="stat-label">Today</div>
               </div>
             </div>
           </div>
